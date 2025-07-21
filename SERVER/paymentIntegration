@@ -1,0 +1,29 @@
+
+// razorpay 
+/*
+
+ ........... imp points ............
+actual ammount jr 300 asel tr razoarpay madhe x 100 karavel leagte mhanje 30000 dyave lagel 
+
+....Mandatory field ....
+ammount
+Currancy  --> INR  (for India) 
+
+... optional field ....
+1. receipt 
+2. Notes
+3.partial_payment 
+
+
+// razorpay ch instance  gheun --> well defiend steps for integration 
+
+1. key_id,key_secret, header yachi value mhanje data add karaych a
+
+2. order crearte karaychi 
+
+
+
+
+
+
+*/
