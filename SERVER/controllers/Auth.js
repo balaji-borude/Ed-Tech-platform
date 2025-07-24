@@ -183,6 +183,7 @@ exports.login= async(req,res)=>{
 
         //The .populate("additionalDetails") method in Mongoose is used to replace an ObjectId reference with the actual document from another collection.
         // If User is not found with provided email
+        
         if (!user) {
             // ERROR 2: Missing return statement causing headers to be sent twice
             return res.status(401).json({

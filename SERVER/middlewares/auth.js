@@ -30,7 +30,8 @@ exports.auth = async (req, res, next) => {
             const decode =  jwt.verify(token, JWT_SCERET);
             console.log(decode);
             req.user = decode;    
-            // user chya request madhe Token pathavle ====> mahnje pratyek user chya request madhe he token janar --> tyacha fayda as honar ki -->
+            // user chya request madhe Token pathavle ====> mahnje pratyek user chya request madhe he token janar --> tyacha fayda as honar ki --> pudhcya konntya hi request user takel tyamadhe token asel ch 
+            
             // const payload={
             //     id:user._id,
             //     email:user.email,

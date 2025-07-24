@@ -41,4 +41,11 @@ OTPSchema.pre("save",async function(next){
     next();  // go to the next middleware 
 })
 
+const arrowFunction =async()=>{
+
+}
+
+function balaji(){
+ console.log('first ')
+}
 module.exports = mongoose.model("OTP",OTPSchema)

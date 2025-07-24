@@ -55,6 +55,7 @@ const CourseBuilderForm = () => {
     setLoading(true);
     let result = null;
     // lets if i am editing the section then EditSection API is called --> which is below
+
     if(editSectionName){
       // API CALL HERE 
         result = await updateSection({
@@ -70,7 +71,7 @@ const CourseBuilderForm = () => {
           courseId:course._id
         },token)
 
-        console.log("Response of createsection --> ",result);
+        //console.log("Response of createsection --> ",result);
       }
       // values update karaychi ahe 
       if(result){
@@ -98,6 +99,7 @@ const CourseBuilderForm = () => {
     <div>
       <p> Course Builder </p>
 
+      {/* Course */}
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <label htmlFor='sectionName' className='text-richblack-5'> Section Name <sup>*</sup></label>
