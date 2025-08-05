@@ -10,7 +10,7 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import NestedView from '../CourseBuilder/NestedView '
 
-import { setStep, setCourse ,setEditCourse } from '../../../../../slices/courseSlice'; // here is the calling of the courseSlice
+  import { setStep, setCourse ,setEditCourse } from '../../../../../slices/courseSlice'; // here is the calling of the courseSlice
 
 const CourseBuilderForm = () => {
 
@@ -100,6 +100,8 @@ const CourseBuilderForm = () => {
     setValue("sectionName",sectionName);
 
   }
+
+
   return (
     <div>
       <p> Course Builder </p>
@@ -126,7 +128,8 @@ const CourseBuilderForm = () => {
             type="submit"
             text={editSectionName ? "Edit Section Name" : "Create Section"}
             outline={true}
-            customClasses={"text-white"}
+          
+            customClasses={"text-red"}
 
           >
             <GoPlusCircle  className='text-yellow-50'/>
@@ -145,26 +148,10 @@ const CourseBuilderForm = () => {
             )
           }
 
-          {/*  Nested View wala componsnts banavlene ahe  */}
-          {/* section banavlyaver te yehte dilse pahije  */}
 
-          {console.log("Printing the legth of courseContent", course.courseContent.length)}
-          {
-            course.courseContent.length > 0 &&(
-              
-              <NestedView 
-                handleChangeEditSectionName={handleChangeEditSectionName} 
-                course={course}
-                editSectionName={editSectionName}
-                cancelEdit={cancelEdit}
-              />
-            
-            )
-          }
 
           {/* Backa nd next button */}
-
-          <div className='flex justify-end gap-x-5 ml-5'>
+          <div className='flex justify-end gap-x-5 ml-5 mt-10'>
 
             <button
               type='button'
@@ -183,7 +170,27 @@ const CourseBuilderForm = () => {
           </div>
 
 
+         
+
+
         </div>
+
+         {/*  Nested View wala componsnts banavlene ahe  */}
+          {/* section banavlyaver te yehte dilse pahije  */}
+
+          {console.log("Printing the legth of courseContent", course.courseContent.length)}
+          {
+            course.courseContent.length > 0 &&(
+              
+              <NestedView 
+                handleChangeEditSectionName={handleChangeEditSectionName} 
+                course={course}
+                editSectionName={editSectionName}
+                cancelEdit={cancelEdit}
+              />
+            
+            )
+          }
       </form>
     </div>
   )

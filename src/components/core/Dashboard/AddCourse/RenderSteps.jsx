@@ -30,6 +30,7 @@ const RenderSteps = () => {
     <>
       <div className="relative mb-2 flex w-full justify-center">
         {steps.map((items, index) => (
+
           <React.Fragment key={items.id}>
               <div className="flex flex-col items-center">
                 <div>
@@ -56,7 +57,7 @@ const RenderSteps = () => {
               {items.id !== steps.length && (
                 <div
                   className={`h-[calc(34px/2)] w-[33%] border-dashed border-b-2 
-                    ${step > items.id ? "border-caribbeangreen-100" : "border-richblack-500"}
+                    ${step > items.id ? "border-yellow-100" : "border-richblack-500"}
                   `}
                 >
                   
