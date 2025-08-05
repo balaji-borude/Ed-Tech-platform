@@ -9,6 +9,7 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  editCourse
 } = require("../controllers/Course")
 
 
@@ -51,8 +52,12 @@ const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth"
 router.post("/createCourse", auth, isInstructor, createCourse)
 //Add a Section to a Course
 router.post("/addSection", auth, isInstructor, createSection)
+// Edit Course
+router.put("/editCourse",auth,isInstructor,editCourse);
+
 // Update a Section
 router.post("/updateSection", auth, isInstructor, updateSection)
+
 // Delete a Section
 router.post("/deleteSection", auth, isInstructor, deleteSection)
 // Edit Sub Section

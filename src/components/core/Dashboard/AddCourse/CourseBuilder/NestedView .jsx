@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RxDropdownMenu } from "react-icons/rx";
 
 
-const NestedView  = () => {
+const NestedView  = ({course}) => {
 
-    const {course} = useSelector((state)=>state.auth);
+    // const {course} = useSelector((state)=>state.auth);
     const {token} = useSelector((state)=>state.auth);
     const dispatch = useDispatch();
 
@@ -16,17 +16,20 @@ const NestedView  = () => {
     
     const[confirmationModal,setConfirmationModal] = useState();
 
+       console.log("Printing the course from auth state-->",course);
+
     return (
     <div>
         <div>
             {
-                course?.courseContent?.map((section)=>{
-                    return <details key={section._id} open> 
+             
+                course.courseContent.map((section)=>{
+                    return <details key={section._id} open > 
                     {/* by default open thevne ahe details--> tag la   */}
                         <summary>
                             <div>
                                 <RxDropdownMenu />
-                                <p>{section.sectionName} </p>
+                                <p className='text-white'>{section.sectionName} </p>
 
                             </div>
 

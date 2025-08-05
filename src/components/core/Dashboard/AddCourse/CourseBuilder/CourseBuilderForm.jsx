@@ -10,6 +10,8 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import NestedView from '../CourseBuilder/NestedView '
 
+import { setStep, setCourse ,setEditCourse } from '../../../../../slices/courseSlice'; // here is the calling of the courseSlice
+
 const CourseBuilderForm = () => {
 
   // usefull thing to be imported for ==> useForm Hook
@@ -19,8 +21,10 @@ const CourseBuilderForm = () => {
   const[editSectionName,setEditSectionName] = useState(false);
   const[loading,setLoading] = useState(false);
 
+  // const [result,setResult] = useState({});
 
-  const {course,setCourse,setStep,setEditCourse} = useSelector((state)=> state.course);
+  const {course} = useSelector((state)=> state.course); // --> course are getting from course slice 
+  
   const {token} = useSelector((state)=>state.auth);
 
   const dispatch = useDispatch();
@@ -33,12 +37,13 @@ const CourseBuilderForm = () => {
 
   const goBack =()=>{
     // jr apan mage jat asel tr apan course la create krt  nhai ahe apan tyala --< Edit krnra ahe --> step-1; madhe editcourse cha flag dila ahe tyala access karayche 
+    // console.log("IN Go Back function --> why step is note set to the -- 1")
     dispatch(setStep(1));
     dispatch(setEditCourse(true))
   }
 
   const goToNext=()=>{
-    if(course.courseContent.length===0){
+    if(course.courseContent.length === 0){
       toast.error("Please add atleast one section ")
       return;
     }
@@ -71,27 +76,27 @@ const CourseBuilderForm = () => {
           courseId:course._id
         },token)
 
-        //console.log("Response of createsection --> ",result);
       }
+      
+      console.log("Response of createsection in result  /--> ",result); // undefiend yethe 
       // values update karaychi ahe 
       if(result){
         dispatch(setCourse(result));
         setEditSectionName(false);
-        setValue("sectionName"," ");
+        setValue("sectionName","");
       }
       // loading false karne ahe 
       setLoading(false);
   }
 
-  // NESTED VIEW SATHI FUNCION banavle 
+  // NESTED VIEW --->  SATHI FUNCION banavle 
   const handleChangeEditSectionName =(sectionId,sectionName)=>{
 
     if(editSectionName === sectionId){
       cancelEdit()
       return;
     }
-    setEditSectionName
-    (sectionId);
+    setEditSectionName(sectionId);
     setValue("sectionName",sectionName);
 
   }
@@ -143,21 +148,28 @@ const CourseBuilderForm = () => {
           {/*  Nested View wala componsnts banavlene ahe  */}
           {/* section banavlyaver te yehte dilse pahije  */}
 
-
+          {console.log("Printing the legth of courseContent", course.courseContent.length)}
           {
-            course.courseContent.length>0 &&(
-              <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
+            course.courseContent.length > 0 &&(
+              
+              <NestedView 
+                handleChangeEditSectionName={handleChangeEditSectionName} 
+                course={course}
+                editSectionName={editSectionName}
+                cancelEdit={cancelEdit}
+              />
             
             )
           }
 
           {/* Backa nd next button */}
 
-          <div className='flex justify-end gap-x-3'>
+          <div className='flex justify-end gap-x-5 ml-5'>
 
             <button
+              type='button'
               onClick={goBack}
-              className='rounded-md cursor-pointer flex items-center'
+              className='rounded-md cursor-pointer flex items-center border-white p-5 border text-white'
             >
               Back
             </button>

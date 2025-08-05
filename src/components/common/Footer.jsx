@@ -68,7 +68,8 @@ const Footer = () => {
               </div>
               <div></div>
             </div>
-
+                
+                {/* Resources section  */}
             <div className="w-[48%] lg:w-[30%] mb-7 lg:pl-0">
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Resources
@@ -96,7 +97,7 @@ const Footer = () => {
                 <Link to={"/help-center"}>Help Center</Link>
               </div>
             </div>
-
+                {/* Plan section */}
             <div className="w-[48%] lg:w-[30%] mb-7 lg:pl-0">
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Plans
@@ -135,6 +136,7 @@ const Footer = () => {
                 })}
               </div>
             </div>
+
           </div>
 
           {/* Section 2 */}
