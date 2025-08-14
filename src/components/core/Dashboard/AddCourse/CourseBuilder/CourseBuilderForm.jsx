@@ -10,7 +10,7 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import NestedView from '../CourseBuilder/NestedView '
 
-  import { setStep, setCourse ,setEditCourse } from '../../../../../slices/courseSlice'; // here is the calling of the courseSlice
+import { setStep, setCourse ,setEditCourse } from '../../../../../slices/courseSlice'; // here is the calling of the courseSlice
 
 const CourseBuilderForm = () => {
 
