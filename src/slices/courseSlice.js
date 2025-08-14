@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   step: 1, // initialy state step chi nehki 1 rahile ti add course madhe use zali ahe  
-  course: null,
+  // course: null,
+    course: {
+    courseContent: []
+  },
   editCourse: false,
   paymentLoading: false,
 }

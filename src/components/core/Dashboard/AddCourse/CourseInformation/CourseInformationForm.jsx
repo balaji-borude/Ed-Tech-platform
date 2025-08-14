@@ -1,22 +1,23 @@
-import React,{useEffect, useState} from 'react'
-import { useForm } from 'react-hook-form' ; // react form hook 
-import { useDispatch, useSelector } from 'react-redux'
-import {addCourseDetails, editCourseDetails, fetchCourseCategories} from '../../../../../services/operations/courseDetailsAPI'
-import { HiOutlineCurrencyRupee } from "react-icons/hi2";
-import ChipInput from './ChipInput';
-import Upload from './Upload';
-import RequirementsField from './RequirementsField';
-import IconBtn from '../../../../common/IconBtn'
-import toast from 'react-hot-toast';
-import {setStep,setCourse} from '../../../../../slices/courseSlice'
-import { MdNavigateNext } from "react-icons/md";
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
+import { HiOutlineCurrencyRupee } from "react-icons/hi"
+import { MdNavigateNext } from "react-icons/md"
+import { useDispatch, useSelector } from "react-redux"
 
+import {
+  addCourseDetails,
+  editCourseDetails,
+  fetchCourseCategories,
+} from "../../../../../services/operations/courseDetailsAPI"
+import { setCourse, setStep } from "../../../../../slices/courseSlice"
+import { COURSE_STATUS } from "../../../../../utils/constants"
+import IconBtn from "../../../../common/IconBtn"
+import Upload from "../Upload"
+import ChipInput from "./ChipInput"
+import RequirementsField from "./RequirementField"
 
-import {COURSE_STATUS} from '../../../../../utils/constants';
-
-const CourseInformationForm = () => {
-
-  
+export default function CourseInformationForm() {
   const {
     register,
     handleSubmit,
@@ -25,8 +26,7 @@ const CourseInformationForm = () => {
     formState: { errors },
   } = useForm()
 
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch()
   const { token } = useSelector((state) => state.auth)
   const { course, editCourse } = useSelector((state) => state.course)
   const [loading, setLoading] = useState(false)
@@ -70,7 +70,7 @@ const CourseInformationForm = () => {
       currentValues.courseBenefits !== course.whatYouWillLearn ||
       currentValues.courseCategory._id !== course.category._id ||
       currentValues.courseRequirements.toString() !==
-      course.instructions.toString() ||
+        course.instructions.toString() ||
       currentValues.courseImage !== course.thumbnail
     ) {
       return true
@@ -81,9 +81,6 @@ const CourseInformationForm = () => {
   //   handle next button click
   const onSubmit = async (data) => {
     // console.log(data)
-
-    //console.log("next button handler in create course ")
-
 
     if (editCourse) {
       // const currentValues = getValues()
@@ -139,9 +136,7 @@ const CourseInformationForm = () => {
       return
     }
 
-    // object crete kela 
     const formData = new FormData()
-
     formData.append("courseName", data.courseTitle)
     formData.append("courseDescription", data.courseShortDesc)
     formData.append("price", data.coursePrice)
@@ -165,7 +160,6 @@ const CourseInformationForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
     >
-      
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseTitle">
@@ -263,7 +257,6 @@ const CourseInformationForm = () => {
         setValue={setValue}
         getValues={getValues}
       />
-
       {/* Course Thumbnail Image */}
       <Upload
         name="courseImage"
@@ -273,7 +266,6 @@ const CourseInformationForm = () => {
         errors={errors}
         editData={editCourse ? course?.thumbnail : null}
       />
-
       {/* Benefits of the course */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
@@ -316,11 +308,8 @@ const CourseInformationForm = () => {
           text={!editCourse ? "Next" : "Save Changes"}
         >
           <MdNavigateNext />
-
         </IconBtn>
       </div>
     </form>
   )
 }
-
-export default CourseInformationForm
