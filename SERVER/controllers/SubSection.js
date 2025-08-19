@@ -4,65 +4,118 @@ const SubSection = require("../models/SubSection");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 
 // create section
-exports.createSubSection = async (req, res) => {
-  try {
-    // fetch the data from req.body
-    const { sectionId, title, description } = req.body;
+// exports.createSubSection = async (req, res) => {
+//   try {
+//     // fetch the data from req.body
+//     const { sectionId, title, description } = req.body;
 
-    //extract file for video input
-    const video = req.files.videofile;
-    //const video = req.files.video;
+//     //extract file for video input
+//     const video = req.files.videofile;
+//     //const video = req.files.video;
 
 
-    //validation
-    if (!sectionId || !title ||  !description) {
-      return res.status(400).json({
-        success: false,
-        message: "All field are Required",
-      });
-    }
-    // upload video to cloudinary
-    const Uploadetails = await uploadImageToCloudinary(
-      video,
-      process.env.FOLDER_NAME
-    );
+//     //validation
+//     if (!sectionId || !title ||  !description) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "All field are Required",
+//       });
+//     }
+//     // upload video to cloudinary
+//     const Uploadetails = await uploadImageToCloudinary(
+//       video,
+//       process.env.FOLDER_NAME
+//     );
 
-    // create subsection and strore the SecureUrl of video in DB
+//     // create subsection and strore the SecureUrl of video in DB
 
-    const subSectionDetail = await SubSection.create({
-      title: title,
-      description: description,
-      videoUrl: Uploadetails.secure_url,
-    });
+//     const subSectionDetail = await SubSection.create({
+//       title: title,
+//       description: description,
+//       videoUrl: Uploadetails.secure_url,
+//     });
 
-    // Update section with subsection Id
-    const updatedSection = await Section.findByIdAndUpdate(
-      { _id: sectionId },
-      {
-        $push: {
-          SubSection: subSectionDetail._id,
-        },
-      },
-      { new: true }
-    );
-    // section madhe subSection cha data ksa stored hoil --> id chya form madhe ;
-    //  jr aplyla Id chya form madhe nahi pahije asel tevha .populate --> use karayche  ----> H.W
+//     // Update section with subsection Id
+//     const updatedSection = await Section.findByIdAndUpdate(
+//       { _id: sectionId },
+//       {
+//         $push: {
+//           SubSection: subSectionDetail._id,
+//         },
+//       },
+//       { new: true }
+//     );
+//     // section madhe subSection cha data ksa stored hoil --> id chya form madhe ;
+//     //  jr aplyla Id chya form madhe nahi pahije asel tevha .populate --> use karayche  ----> H.W
 
-    // H>W ==>log Updated section here, after populate query
+//     // H>W ==>log Updated section here, after populate query
 
-    //response true
-    return res.status(200).json({
-      success: true,
-      message: "Subsection Created Succesfully",
-      data: updatedSection,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Error in Subsection created",
-    });
-  }
-};
+//     //response true
+//     return res.status(200).json({
+//       success: true,
+//       message: "Subsection Created Succesfully",
+//       data: updatedSection,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error in Subsection created",
+//     });
+//   }
+// };
+
+
+// Create a new sub-section for a given section
+// exports.createSubSection = async (req, res) => {
+//     try {
+//       // Extract necessary information from the request body
+//       const { sectionId, title, description } = req.body
+//       const video = req.files.video
+  
+//       // Check if all necessary fields are provided
+//       // if (!sectionId || !title || !description ) {
+//       //   return res
+//       //     .status(404)
+//       //     .json({ success: false, message: "All Fields are Required" })
+//       // }
+
+//       // console.log("Getting the video from frontend from req.files",video)
+  
+//       // Upload the video file to Cloudinary
+//       const uploadDetails = await uploadImageToCloudinary(
+//         video,
+//         process.env.FOLDER_NAME
+//       );
+
+//       console.log("Printing the upload img to cloudinary details ",uploadDetails);
+
+//       // Create a new sub-section with the necessary information
+//       const SubSectionDetails = await SubSection.create({
+//         title: title,
+//         timeDuration: `${uploadDetails.duration}`,
+//         description: description,
+//         videoUrl: uploadDetails.secure_url,
+//       })
+  
+//       // Update the corresponding section with the newly created sub-section
+//       const updatedSection = await Section.findByIdAndUpdate(
+//         { _id: sectionId },
+//         { $push: { subSection: SubSectionDetails._id } },
+//         { new: true }
+//       ).populate("subSection")
+  
+//       // Return the updated section in the response
+//       return res.status(200).json({ success: true, data: updatedSection })
+//     } catch (error) {
+//       // Handle any errors that may occur during the process
+//       console.error("Error creating new sub-section:", error)
+//       return res.status(500).json({
+//         success: false,
+//         message: "Internal server error",
+//         error: error.message,
+//       })
+//     }
+//   }
 
 // H.W==> UPDATE SUBSECTION
 
@@ -126,6 +179,59 @@ exports.createSubSection = async (req, res) => {
 //     });
 //   }
 // };
+
+
+exports.createSubSection = async (req, res) => {
+  try {
+    const { sectionId, title, description } = req.body;
+    const video = req.files?.videofile;  // support both keys
+
+    // Validation
+    if (!sectionId || !title || !description || !video) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    // Upload video to Cloudinary
+    const uploadDetails = await uploadImageToCloudinary(
+      video,
+      process.env.FOLDER_NAME
+    );
+
+    // Create subsection
+    const subSectionDetail = await SubSection.create({
+      title,
+      description,
+      timeDuration: `${uploadDetails.duration}`,
+      videoUrl: uploadDetails.secure_url,
+    });
+
+    // Update Section
+    const updatedSection = await Section.findByIdAndUpdate(
+      sectionId,
+      { $push: { subSection: subSectionDetail._id } }, // 🔄 CHANGED: SubSection → subSection (to match schema)
+      { new: true }
+    ).populate("subSection"); // 🔄 CHANGED: SubSection → subSection (to match schema)
+
+
+    return res.status(200).json({
+      success: true,
+      message: "Subsection Created Successfully",
+      data: updatedSection,
+    });
+  } catch (error) {
+    console.error("Error creating new sub-section:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+
 
 
 

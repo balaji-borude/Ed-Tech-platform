@@ -116,13 +116,13 @@ export default function SubSectionModal({
 
     // for SUBSECTION creation API calling --------------------------------------
     const result = await createSubSection(formData, token);
-    console.log("Prinig the add lecture subsection form", formData);
+    // console.log("Prinig the add lecture subsection form", formData);
 
-    console.log("---- Printing Add Lecture Subsection FormData ----");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-    console.log("---- End ----");
+    // console.log("---- Printing Add Lecture Subsection FormData ----");
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+    // console.log("---- End ----");
 
     if (result) {
       // update the structure of course
@@ -201,6 +201,7 @@ export default function SubSectionModal({
               </span>
             )}
           </div>
+
           {!view && (
             <div className="flex justify-end">
               <IconBtn

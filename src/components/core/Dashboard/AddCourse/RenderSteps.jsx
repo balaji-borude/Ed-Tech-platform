@@ -82,9 +82,9 @@ export default function RenderSteps() {
         ))}
       </div>
       {/* Render specific component based on current step */}
-      {step === 1 && <CourseInformationForm />}
-      {step === 2 && <CourseBuilderForm />}
-      {step === 3 &&  <PublishCourse /> }
+      {step === 1 && <CourseInformationForm/>}
+      {step === 2 && <CourseBuilderForm/>}
+      {step === 3 &&  <PublishCourse/> }
     </>
   )
 }

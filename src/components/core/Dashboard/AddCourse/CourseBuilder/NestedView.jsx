@@ -59,6 +59,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
         {course?.courseContent?.map((section) => (
           // Section Dropdown
           <details key={section._id} open>
+
             {/* Section Dropdown Content */}
             <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
               <div className="flex items-center gap-x-3">
@@ -98,7 +99,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
             </summary>
 
 
-            {/* #################################Subsection########################## */}
+            {/* ############################### Subsection  ######################## */}
             <div className="px-6 pb-4">
               {/* Render All Sub Sections Within a Section */}
               {section.subSection.map((data) => (
@@ -109,22 +110,25 @@ export default function NestedView({ handleChangeEditSectionName }) {
                 >
                   <div className="flex items-center gap-x-3 py-2 ">
                     <RxDropdownMenu className="text-2xl text-richblack-50" />
-                    <p className="font-semibold text-richblack-50">
+                    <p className="font-semibold text-richblack-50"> 
                       {data.title}
+                      {console.log("Printing the data in subsection ", data)}
                     </p>
                   </div>
                   
                   <div
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}  // this is for the not selecting the whole div only the buttons 
                     className="flex items-center gap-x-3"
                   >
                     <button
                       onClick={() =>
                         setEditSubSection({ ...data, sectionId: section._id })
                       }
+                      // className="bg-caribbeangreen-500"
                     >
-                      <MdEdit className="text-xl text-richblack-300" />
+                      <MdEdit className="text-xl text-richblack-300 bg-gree" />
                     </button>
+
                     <button
                       onClick={() =>
                         setConfirmationModal({
@@ -143,7 +147,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                   </div>
                 </div>
               ))}
-              
+
               {/* Add New Lecture to Section */}
               <button
                 onClick={() => setAddSubsection(section._id)}

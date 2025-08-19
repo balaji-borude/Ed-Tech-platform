@@ -81,6 +81,7 @@ export default function CourseBuilderForm() {
   }
 
   const goToNext = () => {
+    // console.log("clicking on next button ")lect
     if (course.courseContent.length === 0) {
       toast.error("Please add atleast one section")
       return
@@ -95,6 +96,7 @@ export default function CourseBuilderForm() {
   }
 
   const goBack = () => {
+    // console.log("clicking oin back button ")
     dispatch(setStep(1))
     dispatch(setEditCourse(true))
   }
@@ -151,7 +153,7 @@ export default function CourseBuilderForm() {
         >
           Back
         </button>
-        <IconBtn disabled={loading} text="Next" onclick={goToNext}>
+        <IconBtn disabled={loading} text="Next" onClick={goToNext}>
           <MdNavigateNext />
         </IconBtn>
       </div>

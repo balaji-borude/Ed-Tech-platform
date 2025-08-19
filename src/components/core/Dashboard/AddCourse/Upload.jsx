@@ -75,8 +75,10 @@ export default function Upload({
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
         } flex min-h-[250px] cursor-pointer items-center justify-center rounded-md border-2 border-dotted border-richblack-500`}
-        onClick={() => inputRef.current?.click()} // Manually trigger file dialog
+        onClick={() => inputRef.current?.click()} 
       >
+        {/*TODO --  SOLVE THIS ISsue  */}
+        {/* lot of issue is occured -- multipart */}
         <input {...getInputProps()} ref={inputRef} />
 
         {previewSource ? (
