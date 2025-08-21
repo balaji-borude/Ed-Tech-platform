@@ -100,11 +100,12 @@ export default function PublishCourse() {
             className="rounded h-4 w-4 text-richblack-5 "
           /> 
 
-          <label htmlFor="public" className="text-richblack-5">Make This course as Public </label>
+          <label htmlFor="public" className="text-richblack-300">Make This course as Public </label>
 
         </div>
         {/* Button */}
         <div className="flex justify-end gap-x-3">
+          {/*TODO -->  add logo of backward side   */}
           <button disabled={loading}
             type="button"
             onClick={goBack}
@@ -115,7 +116,7 @@ export default function PublishCourse() {
 
           <IconBtn
             disabled={loading}
-            text={"Save changes"}
+            text={"Save and Publish"}
             //onClick={()=>handlePublish}
           />
 
