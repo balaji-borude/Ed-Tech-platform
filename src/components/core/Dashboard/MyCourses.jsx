@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import {fetchInstructorCourses} from '../../../services/operations/courseDetailsAPI';
@@ -9,16 +9,19 @@ import CoursesTable from './InstructorCourses/CoursesTable';
 
 
 const MyCourses = () => {
+
     const {token} = useSelector((state)=>state.auth);
     const navigate = useNavigate();
 
     const[courses,setCourses]= useState([]);
 
-    // Instructor chya Sarv course fetch krt ahe -- First render wr  
+    // Instructor ne Build kelele --- Sarv course fetch krt ahe -- First render wr  
     useEffect(()=>{
+
         const fetchCourses = async()=>{
             const result = await fetchInstructorCourses(token);
-
+            console.log("Priting token from the fetcCourse",token);
+            console.log(result)
             if(result){
                 setCourses(result);
             }
@@ -30,7 +33,7 @@ const MyCourses = () => {
 
 
   return (
-    <div>
+    <div className=''>
         <div>
             <h1> My Courses </h1>
 

@@ -9,8 +9,12 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
-  editCourse
-} = require("../controllers/Course")
+  editCourse,
+  deleteCourse,
+  getInstructorCourses,
+  getFullCourseDetails,  
+
+} = require("../controllers/course")
 
 
 // Categories Controllers Import
@@ -41,10 +45,13 @@ const {
   getAllRatingAndReview,
 } = require("../controllers/RatingAndReview")
 
+//*************************************************************************************** */
+
 // Importing Middlewares
 const { auth, isInstructor, isStudent, isAdmin } = require("../middlewares/auth")
 
 // ********************************************************************************************************
+
 //                                      Course routes
 // ********************************************************************************************************
 
@@ -70,6 +77,16 @@ router.post("/addSubSection", auth, isInstructor, createSubSection)
 router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
 router.post("/getCourseDetails", getCourseDetails)
+
+// Get all Instructor Courses 
+router.get("/getInstructorCourses",auth, isInstructor,getInstructorCourses);
+// delet the course 
+router.delete("/deleteCourse",deleteCourse);
+
+
+// Get Details for a Specific Courses
+router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)
