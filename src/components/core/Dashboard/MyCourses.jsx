@@ -33,13 +33,14 @@ const MyCourses = () => {
 
 
   return (
-    <div className=''>
-        <div>
-            <h1> My Courses </h1>
+    <div>
+
+        <div className='space-y-4'>
+            <h1 className='text-richblack-25 font-medium text-2xl  '> My Courses </h1>
 
             <IconBtn
                 text="Add Course"
-                onClick={()=>navigate("/dashboard.add-course")}
+                onClick={()=>navigate("/dashboard/add-course")}
                 //  TODO --> add Plus Icons  here
             />
         </div>
@@ -48,6 +49,8 @@ const MyCourses = () => {
         {
             courses && <CoursesTable courses={courses} setCourses={setCourses} />
         }
+
+
     </div>
   )
 }

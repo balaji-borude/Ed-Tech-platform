@@ -7,11 +7,17 @@ import {deleteCourse, fetchInstructorCourses} from '../../../../services/operati
 
 import { Table, Thead, Tr, Th, Tbody, Td } from "react-super-responsive-table";
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import { useNavigate } from "react-router-dom";
 // import {setCourse} from '../../../../slices/courseSlice.js'
 
+
+
+// Todo --> add the select option, SelectAll button and after selection delete button which delete the whole course ;
+// make the controller-->  DeleteAllCourses that delete All courses and 
 export default function CoursesTable({ courses, setCourses }) {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { token } = useSelector((state) => state.auth);
 
@@ -34,7 +40,7 @@ export default function CoursesTable({ courses, setCourses }) {
   return (
     // here React Super Resonsive table libraryt is usedd -->npm i react-super-responsive-table
     <div className="text-richblack-25 ">
-      <Table className="border">
+      <Table >
 
         <Thead>
           <Tr className=" ">
@@ -68,7 +74,7 @@ export default function CoursesTable({ courses, setCourses }) {
                     height={"140px"}
                     width={"220px"}
                     alt="Thumnail Img "
-                    className="rounded-lg object-cover"
+                    className="rounded-lg "
                   />
 
                   <div className=" flex flex-col ">
@@ -104,7 +110,7 @@ export default function CoursesTable({ courses, setCourses }) {
                   {/* edit button */}
                   <button
                     disabled={loading} // jr loading chi value true hoti tevha button la disabled karun tak
-                    // onClick={()=>{Navigate('/edit')}} TODO---
+                    onClick={()=>{navigate(`/dashboard/edit-course/${course._id}`)}} //TODO---
                   >
                     Edit
                   </button>

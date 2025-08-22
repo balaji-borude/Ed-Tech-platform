@@ -44,7 +44,7 @@ export default function UpdatePassword() {
 
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
 
-              <label htmlFor="oldPassword" className="lable-style">
+              <label htmlFor="oldPassword" className="lable-style text-richblack-25">
                 Current Password
               </label>
 
@@ -53,13 +53,13 @@ export default function UpdatePassword() {
                 name="oldPassword"
                 id="oldPassword"
                 placeholder="Enter Current Password"
-                className="form-style"
+                className="form-style "
                 {...register("oldPassword", { required: true })}
               />
 
               <span
                 onClick={() => setShowOldPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 top-[32px] z-[10] cursor-pointer"
               >
                 {showOldPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -74,7 +74,7 @@ export default function UpdatePassword() {
               )}
             </div>
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="newPassword" className="lable-style">
+              <label htmlFor="newPassword" className="lable-style text-richblack-25">
                 New Password
               </label>
               <input
@@ -87,7 +87,7 @@ export default function UpdatePassword() {
               />
               <span
                 onClick={() => setShowNewPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+                className="absolute right-3 top-[32px] z-[10] cursor-pointer"
               >
                 {showNewPassword ? (
                   <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
