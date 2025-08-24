@@ -8,18 +8,21 @@ import useOnClickOutside from "../../../hooks/useOnClickOutside"
 import { logout } from "../../../services/operations/authAPI"
 
 export default function ProfileDropdown() {
-  const { user } = useSelector((state) => state.profile)
+  const { user } = useSelector((state) => state.profile);
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+  const [open, setOpen] = useState(false);
+
+  const ref = useRef(null);
 
   useOnClickOutside(ref, () => setOpen(false))
 
-  if (!user) return null
+  if (!user) return null; // if there is no user then there is noting to show 
 
   return (
     <button className="relative" onClick={() => setOpen(true)}>
+
       <div className="flex items-center gap-x-1">
         <img
           src={user?.image}
@@ -28,6 +31,7 @@ export default function ProfileDropdown() {
         />
         <AiOutlineCaretDown className="text-sm text-richblack-100" />
       </div>
+
       {open && (
         <div
           onClick={(e) => e.stopPropagation()}
@@ -40,6 +44,7 @@ export default function ProfileDropdown() {
               Dashboard
             </div>
           </Link>
+
           <div
             onClick={() => {
               dispatch(logout(navigate))
