@@ -23,6 +23,10 @@ import Contact from "./pages/Contact.jsx";
 import AddCourse from "./components/core/Dashboard/AddCourse/index.js";
 import MyCourses from "./components/core/Dashboard/MyCourses.jsx";
 import EditCourse from "./components/core/Dashboard/EditCourse/index.js";
+import Catlog from "./pages/Catlog.jsx";
+
+
+
 const App = () => {
   const { user } = useSelector((state) => state.profile);
 
@@ -34,6 +38,7 @@ const App = () => {
       <Routes>
         {/* This is the home page  */}
         <Route path="/" element={<Home />} />
+        <Route path="/catalog/:catlogname" element={<Catlog />} />
 
         <Route
           path="signup"

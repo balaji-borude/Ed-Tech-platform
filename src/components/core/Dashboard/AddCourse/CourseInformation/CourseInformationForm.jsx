@@ -34,8 +34,11 @@ export default function CourseInformationForm() {
 
   useEffect(() => {
     const getCategories = async () => {
-      setLoading(true)
-      const categories = await fetchCourseCategories()
+      setLoading(true);
+      
+      const categories = await fetchCourseCategories();
+      console.log("Fetching the catogories in the Create course ",categories);
+      
       if (categories.length > 0) {
         // console.log("categories", categories)
         setCourseCategories(categories)
@@ -56,7 +59,6 @@ export default function CourseInformationForm() {
     }
     getCategories()
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const isFormUpdated = () => {

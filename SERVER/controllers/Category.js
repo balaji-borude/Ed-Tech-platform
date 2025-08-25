@@ -71,7 +71,7 @@ exports.showAllCategories = async (req, res) => {
 //HW- get top courses sathi pagedetails 
 exports.categoryPageDetails = async (req, res) => {
     try {
-      const { categoryId } = req.body
+      const { categoryId } = req.body;
       console.log("PRINTING CATEGORY ID: ", categoryId);
       // Get courses for the specified category
       const selectedCategory = await Category.findById(categoryId)
