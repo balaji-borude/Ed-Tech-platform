@@ -1,4 +1,5 @@
 export default function GetAvgRating(ratingArr) {
+  
   if (ratingArr?.length === 0) return 0;
 
   // .redduce() function array la accumlate karun ek single value return karto
