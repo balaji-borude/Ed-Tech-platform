@@ -28,7 +28,7 @@ const CourseCard = ({course,Height}) => {
             <img
               src={course?.thumbnail}
               alt="course thumnail"
-              className={`${Height} w-full rounded-xl object-cover `}
+              className={`${Height} w-full rounded-xl object-cover p-2 `}
             />
           </div>
           {/* one sectyon */}

@@ -1,38 +1,44 @@
-import React from 'react'
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
-import {Swiper, SwiperSlide} from "swiper/react"
-import "swiper/css"
-import "swiper/css/free-mode"
-import "swiper/css/pagination"
-// import { FreeMode, Pagination } from "swiper/modules"
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import CourseCard from "./CourseCard";
 
-import CourseCard from './CourseCard'
-
-const CourseSlider = ({Courses}) => {
-
-
+const CourseSlider = ({ Courses }) => {
   return (
     <>
-      {
-      Courses?.length ? (
+      {Courses?.length ? (
         <Swiper
-          spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Autoplay, Pagination, Navigation]}
+          slidesPerView={2}
+          spaceBetween={10}
+          pagination={{ clickable: true }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          navigation={true} // optional: prev/next arrows
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 40,
+            },
+          }}
+          modules={[Autoplay, Pagination, Navigation]}
           className="max-h-[30rem]"
         >
-          {Courses?.map((course, i) => (
+          {Courses.map((course, i) => (
             <SwiperSlide key={i}>
-              <CourseCard course={course} Height={"h-[250px]"} />
+              <CourseCard course={course} Height="h-[250px]" />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -40,7 +46,7 @@ const CourseSlider = ({Courses}) => {
         <p className="text-xl text-pink-200">No Course Found</p>
       )}
     </>
-  )
-}
+  );
+};
 
-export default CourseSlider
+export default CourseSlider;
