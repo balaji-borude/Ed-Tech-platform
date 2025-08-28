@@ -25,6 +25,7 @@ import MyCourses from "./components/core/Dashboard/MyCourses.jsx";
 import EditCourse from "./components/core/Dashboard/EditCourse/index.js";
 import Catlog from "./pages/Catlog.jsx";
 
+import CourseDetails from "./pages/CourseDetails.jsx";
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
         {/* This is the home page  */}
         <Route path="/" element={<Home />} />
         <Route path="/catalog/:catlogname" element={<Catlog />} />
+        <Route path="/courses/:courrseId" element={<CourseDetails/>} />
 
         <Route
           path="signup"
