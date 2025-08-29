@@ -1,5 +1,4 @@
 
-
 // razorpay cha instace ghetla 
 const{instance}= require("../config/razorpay");
 const Course = require("../models/Course");
@@ -11,7 +10,7 @@ const mailSender = require("../utils/mailSender");
 // import karayche baki ahe 
 const { courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
 
-//const { default: mongoose } = require("mongoose");
+const {paymentSuccessEmail}= require('../mail/templates/paymentSuccessEmail.js');
 
 
 // Below controller is used for multiple iteM buying at once 
@@ -19,9 +18,11 @@ const { courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmai
 // Initiaate the razorpay order 
 exports.capturePayment=async(req,res)=>{
 
-    const {courses} = req.body; // get the all Id's of al courses 
-    const userId = req.user.id;
+    const {courses} = req.body; // get the all Id's of all courses -->   here user can buy one or more than one courses 
+    const userId = req.user.id; // getting user id from AUTH middleware 
 
+    // console.log("Printing the courses from the req.body from capture payment ",courses );
+    // console.log("Print the USERID from auth in capurre payment ", userId);
     // validation for courses id's
     if(courses.length === 0){
         return res.json({
@@ -31,14 +32,20 @@ exports.capturePayment=async(req,res)=>{
     };
 
 
-    // calculate the total amt 
-    let totalAmount =0;
-    // pratyek course chi id kadli --> courses maddhun ek,ek course chi Id kadhli ani tyatun pricr ghrnar 
+    // calculate the total amt of all courses 
 
+    let totalAmount =0;
+
+    // pratyek course chi id kadli --> courses maddhun ek,ek course chi Id kadhli ani tyatun price ghenar 
     for(const course_id of courses){
+
         let course;
         try {
-            course= await Course.findById(course_id);
+            // console.log("Printing the courseId",course_id);
+            
+            course = await Course.findById(course_id); // // course_id is string__> course_id.courseId --> now cousre_id itself having the multiple course Id 
+            // console.log("Printing the course from cpture payment ",course);
+
             if(!course){
                 return res.status(401).json({
                     success:false,
@@ -49,7 +56,8 @@ exports.capturePayment=async(req,res)=>{
             // check if user is already entrolled to this course 
 
             // check if user already pay for this course --> same user same couser buy kartoy ka te check karnysathi use kelay 
-            const uid = new mongoose.Mongoose.Types.ObjecId(userId);
+            // user Id string madhun Objectid madhe convert karnyasati --> mongoose cha use krt ahe 
+            const uid = new mongoose.Types.ObjectId(userId);
 
             if(course.studentEnrolled.includes(uid)){
                 return res.status(400).json({
@@ -60,7 +68,7 @@ exports.capturePayment=async(req,res)=>{
 
             totalAmount += course.price;
 
-            console.log("Printing the total amt of all courses",totalAmount);
+            // console.log("Printing the total amt of all courses ----> ",totalAmount);
 
         } catch (error) {
             console.log(error);
@@ -74,32 +82,41 @@ exports.capturePayment=async(req,res)=>{
 
     // order create karnysathi Options pahije 
     // option create krt ahe 
+    // Curency is not required in the Test API of razorpay --> currenncy:"INR",
         const options ={
-            amount: totalAmount*100,
-            currenncy:"INR",
+            amount: totalAmount*100, // this is a syntax of razorpay of adding RUppes 
+            //currenncy:"INR",
             receipt:Math.random(Date.now()).toString()
         }
 
+// verifying wher is the issue 
+// console.log("Razorpay Credentials:", process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET);
+ console.log("Order Options:", options);
+
+
     // Option warun Order create karu 
     try {
+        console.log("Entering in order of Payment")
         const paymentResponse = await instance.orders.create(options);
-
+           console.log(" in order of Payment")
         res.json({
             success:true,
-            message:paymentResponse
+            message:paymentResponse,
+          
         })
     } catch (error) {
-        console.log(error);
+        console.log("ERROR IN INITIATE THE ORDER --> ",error);
         res.status(500).json({
             success:false,
-            message:"Could Not Initiate the Order"
+            message:"Could Not Initiate the Order",
+               error: error.message, 
         });
 
     }
 };
 
 
-// verify the payment --> this logic is store in server --> where we only verify the signature --> razorpay kadun signature alay te  ani APAN Je create kel te Match kret ahe ka ==> match hot asel tr te SUCCESFUL payment ahe ==> tyawarun apan course assign karu shakto 
+// verify the payment --> this logic is store in server --> where we only verify the signature --> razorpay kadun signature alay te  ani APAN Je create kel te Match kret ahe ka ==> match hot asel tr te SUCCESFUL payment ahe ==>te je seccess alae trch aple payent purn kelya jail  tyawarun apan course assign karu shakto 
 
 exports.verifyPayment = async(req,res)=>{
 
@@ -118,7 +135,7 @@ exports.verifyPayment = async(req,res)=>{
     if(!razorpay_order_id || !razorpay_payment_id|| razorpay_signature||!courses|| !userId){
         res.status(200).json({
             success:false,
-            message:"Payment Failed "
+            message:"Payment Failed  All fieldsare required "
         })
     };
 
@@ -127,8 +144,8 @@ exports.verifyPayment = async(req,res)=>{
 
     // threee bekar line 
     const expectedSignature = crypto.createHmac("sha256",process.env.RAZORPAY_SECRET)
-    .update(body.toString())
-    .digest("hex");
+                                                                        .update(body.toString())
+                                                                        .digest("hex");
 
 
     // if expected signature and actual signature match zale ==> success ==> student la enrolled ker 
@@ -149,7 +166,9 @@ exports.verifyPayment = async(req,res)=>{
     })
 
 
-}
+};
+
+
 
 // enroll the student
 const enrollStudent =async(courses,userId,res)=>{
@@ -200,7 +219,37 @@ const enrollStudent =async(courses,userId,res)=>{
     }
 }
 
+// send mail after payment success
+exports.sendPaymentSuccessEmail=async(req,res)=>{
+    const {orderId,paymentId,amount} = req.body;
 
+    const userId = req.user.id;
+
+    // validation
+    if(!orderId||!paymentId||!amount||!userId){
+        return res.status(400).json({
+            success:false,message:"Please Provide all the fields"
+        })
+    };
+
+    // student cha data find karaycha 
+    try {
+        // find studen 
+        const enrolledStudent = await User.findById(userId);
+
+        await mailSender(enrollStudent.email,
+            `Payment  Recieved`,
+            paymentSuccessEmail(`${enrolledStudent.firstName}`, amount/100,orderId,paymentId)
+
+        );
+    } catch (error) {
+        console.log("error in sending mail",error);
+        return res.status(500).json({
+            success:false,
+            message:"could not send email "
+        })
+    }
+}
 
 
 

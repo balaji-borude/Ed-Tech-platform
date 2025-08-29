@@ -7,7 +7,7 @@ const PrivateRoute = ({children}) => {
     // to get token from redux 
     const {token} = useSelector((state)=>state.auth);
     
-    // if token is present
+    // if token is present (if token is not null --> means tokenis present )
     if(token !== null)
         return children
     else

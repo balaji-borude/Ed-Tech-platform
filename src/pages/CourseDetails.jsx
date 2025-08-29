@@ -1,12 +1,22 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { buyCourse } from '../services/operations/studenFeaturesApi';;
+
 
 const CourseDetails = () => {
-const token = "33";
+
+    const {user} = useSelector((state)=>state.profile);
+    const {token} = useSelector((state)=>state.auth);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {courseId} = useParams(); // course Id params madhun ghetli 
 
     // razorpay function
     const handleByCourse =()=>{
         if(token){
-            // buyCourse()
+            buyCourse(token,[courseId],user,navigate, dispatch);
         }
     }
 

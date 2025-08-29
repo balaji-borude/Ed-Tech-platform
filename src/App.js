@@ -40,7 +40,7 @@ const App = () => {
         {/* This is the home page  */}
         <Route path="/" element={<Home />} />
         <Route path="/catalog/:catlogname" element={<Catlog />} />
-        <Route path="/courses/:courrseId" element={<CourseDetails/>} />
+        <Route path="/courses/:courseId" element={<CourseDetails/>} />
 
         <Route
           path="signup"

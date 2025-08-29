@@ -261,6 +261,7 @@ exports.sendOTP = async(req,res)=>{
      // check if user already exist
     // Find user with provided email
      const checkUserPresent = await User.findOne({email});
+     
      // user is already exists , then return a response 
      if(checkUserPresent){
          // Return 401 Unauthorized status code with error message
