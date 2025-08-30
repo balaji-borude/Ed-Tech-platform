@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import GetAvgRating from '../../../utils/avgRating';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import GetAvgRating from "../../../utils/avgRating";
 
-import RatingStars from '../../common/RatingStars';
+import RatingStars from "../../common/RatingStars";
 
+const CourseCard = ({ course, Height }) => {
+  // calculate avg rating fucntion
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
 
-const CourseCard = ({course,Height}) => {
+  // pratyek render la jevha course chi entry yeil tevha avgRating Count kadhun gheto
+  useEffect(() => {
+    const count = GetAvgRating(course.ratingAndReviews);
 
-    // calculate avg rating fucntion
-    const[avgReviewCount,setAvgReviewCount] = useState(0);
-
-    // pratyek render la jevha course chi entry yeil tevha avgRating Count kadhun gheto 
-    useEffect(()=>{
-        const count = GetAvgRating(course.ratingAndReviews);
-
-        setAvgReviewCount(count);
-
-    },[course]);
+    setAvgReviewCount(count);
+  }, [course]);
 
   return (
-
-    <div >
-   <Link to={`/courses/${course._id}`}>
+    <div>
+      <Link to={`/courses/${course._id}`}>
         <div className="">
-            {/* Img div  */}
+          {/* Img div  */}
           <div className="rounded-lg">
             <img
               src={course?.thumbnail}
@@ -39,7 +35,7 @@ const CourseCard = ({course,Height}) => {
             </p>
 
             <div className="flex items-center gap-2">
-                {/* rating count */}
+              {/* rating count */}
               <span className="text-yellow-5">{avgReviewCount || 0}</span>
               {/* convert reating number iunto stars */}
               <RatingStars Review_Count={avgReviewCount} />
@@ -54,7 +50,7 @@ const CourseCard = ({course,Height}) => {
         </div>
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default CourseCard
+export default CourseCard;

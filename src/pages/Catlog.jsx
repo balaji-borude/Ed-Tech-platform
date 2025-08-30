@@ -126,7 +126,9 @@ const Catlog = () => {
             </div>
           </div>
 
-          {/* section 3 */}
+
+
+          {/* section 3  --> Course card  */}
           <div>
             <p className="text-3xl text-richblack-5 font-semibold"> Frequently Bought Together </p>
             <div className="py-8">

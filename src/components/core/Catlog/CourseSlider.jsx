@@ -36,11 +36,13 @@ const CourseSlider = ({ Courses }) => {
           modules={[Autoplay, Pagination, Navigation]}
           className="max-h-[30rem]"
         >
+
           {Courses.map((course, i) => (
             <SwiperSlide key={i}>
               <CourseCard course={course} Height="h-[250px]" />
             </SwiperSlide>
           ))}
+          
         </Swiper>
       ) : (
         <p className="text-xl text-pink-200">No Course Found</p>
