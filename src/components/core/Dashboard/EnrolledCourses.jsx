@@ -50,7 +50,8 @@ const EnrolledCourses = () => {
 
                 {
                   enrolledCourses.map((course,index)=>{
-                    <div key={index}>
+                    return(
+                      <div key={index}>
                        {/* left wala part  */} 
                       <div>
                         <img src={course.thumbnail} alt='thumbnail name ' />
@@ -80,7 +81,7 @@ const EnrolledCourses = () => {
                         
                       
                     </div>
-                  })
+                    )})
                 }
 
               </div>

@@ -14,12 +14,12 @@ const mailSender =async (email,title,body)=>{
         })
 
         let Info = await transporter.sendMail({
-            from:"Study Notion  | codehelp - by balaji",
+            from:"Study Notion  | codehelp - by Balaji Borude",
             to: `${email}`,            // mailsender function madhun ::-->  email,title, and body ghetleli ahe 
             subject:`${title}`,                  // chcek can we use --> {body } or not
             html:`${body}`
         }) 
-        console.log("printing semd mail data --> ", Info);
+        console.log("printing send mail data --> ", Info);
 
     } catch (error) {
         console.log(error.message)

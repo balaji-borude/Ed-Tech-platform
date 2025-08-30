@@ -1,77 +1,83 @@
-import React, { useState,useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import OtpInput from 'react-otp-input';
-import { useNavigate } from 'react-router-dom';
-import { sendOtp, signUp } from '../services/operations/authAPI';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Link } from 'react-router-dom';
+import OtpInput from "react-otp-input"; // otp input la import kele--> from npm package react-otp-input
+
+import { useNavigate } from "react-router-dom";
+import { sendOtp, signUp } from "../services/operations/authAPI";
+
+import { Link } from "react-router-dom";
 
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
-// signup function la import kele 
-
+// signup function la import kele
 
 const VerifyEmail = () => {
-    const [otp , setOtp] = useState("");
+  const [otp, setOtp] = useState("");
 
-    const dispatch = useDispatch();
-    const {signupData,loading} = useSelector((state)=>state.auth);
+  const dispatch = useDispatch();
+  const { signupData, loading } = useSelector((state) => state.auth);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // signup data he slice madhe  auth slice madhe SignupData takelel ahe tetheun tyala baher kadhala 
+  // signup data he slice madhe  auth slice madhe SignupData takelel ahe tetheun tyala baher kadhala
 
-    // dispatch madhe signup cha data janar ahe 
+  // dispatch madhe signup cha data janar ahe
 
-    // jr signupData madhe data nasel tr useEffect cha use karun first procecc madhe tyala render kele ahe 
-    useEffect(() => {
-     if(!signupData){
-        navigate("/signup")
-     }
-    },)
-    
-    const handleOnsubmit=(e)=>{
-         console.log("verify is data is present in signupData", signupData);
+  // jr signupData madhe data nasel tr useEffect cha use karun first procecc madhe tyala render kele ahe
+  useEffect(() => {
+    if (!signupData) {
+      navigate("/signup");
+    }
+  });
 
-         e.preventDefault();
+  const handleOnsubmit = (e) => {
+    console.log("verify is data is present in signupData", signupData);
 
-         // crerting object is it okk check ????
-         const {
-                accountType,
-                firstName,
-                lastName,
-                email,
-                password,
-                confirmPassword
-            } = signupData
+    e.preventDefault();
 
-        // call the funciton of signup form 
-        dispatch(signUp(accountType, firstName, lastName, email, password, confirmPassword, otp,navigate));
+    // crerting object is it okk check ????
+    const {
+      accountType,
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+    } = signupData;
 
-        // .then(() => {
-        //     navigate("/login");  // ✅ Navigate only after success
-        // })
-        // .catch(() => {
-        //     navigate("/signup");  // ✅ If signup fails, redirect to signup
-        // });
+    // call the funciton of signup form
+    dispatch(
+      signUp(
+        accountType,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        otp,
+        navigate
+      )
+    );
 
+    // .then(() => {
+    //     navigate("/login");  // ✅ Navigate only after success
+    // })
+    // .catch(() => {
+    //     navigate("/signup");  // ✅ If signup fails, redirect to signup
+    // });
+  };
 
-    };
-
-
-    // H.W ==>> Resent OTP and otp is not matching problem solve karne ahe 
+  // H.W ==>> Resent OTP and otp is not matching problem solve karne ahe
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] grid place-items-center">
-
       {loading ? (
         <div>
           <div className="spinner"></div>
         </div>
-
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
-
           <h1 className="text-richblack-5 font-semibold text-[1.875rem] leading-[2.375rem]">
             Verify Email
           </h1>
@@ -79,7 +85,7 @@ const VerifyEmail = () => {
           <p className="text-[1.125rem] leading-[1.625rem] my-4 text-richblack-100">
             A verification code has been sent to you. Enter the code below
           </p>
-          
+
           <form onSubmit={handleOnsubmit}>
             <OtpInput
               value={otp}
@@ -95,7 +101,6 @@ const VerifyEmail = () => {
                   className="w-[48px] lg:w-[60px] border-0 bg-richblack-800 rounded-[0.5rem] text-richblack-5 aspect-square text-center focus:border-0 focus:outline-2 focus:outline-yellow-50"
                 />
               )}
-
               containerStyle={{
                 justifyContent: "space-between",
                 gap: "0 6px",
@@ -108,7 +113,6 @@ const VerifyEmail = () => {
             >
               Verify Email
             </button>
-
           </form>
 
           {/* Buttons  */}
@@ -121,8 +125,8 @@ const VerifyEmail = () => {
 
             <button
               className="flex items-center text-blue-100 gap-x-2"
-              // navigate to the verifyOTP Page 
-              onClick={() => dispatch(sendOtp(signupData.email,navigate))}
+              // navigate to the verifyOTP Page
+              onClick={() => dispatch(sendOtp(signupData.email, navigate))}
             >
               <RxCountdownTimer />
               Resend it
@@ -131,8 +135,7 @@ const VerifyEmail = () => {
         </div>
       )}
     </div>
+  );
+};
 
-  )
-}
-
-export default VerifyEmail
+export default VerifyEmail;

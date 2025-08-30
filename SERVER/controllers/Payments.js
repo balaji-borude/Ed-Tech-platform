@@ -6,11 +6,13 @@ const mongoose = require("mongoose");// user_id string madhun --> object ID madh
 
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
+const crypto = require("crypto");
 
-// import karayche baki ahe 
+// Import he mail Template 
 const { courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
 
 const {paymentSuccessEmail}= require('../mail/templates/paymentSuccessEmail.js');
+
 
 
 // Below controller is used for multiple iteM buying at once 
@@ -43,7 +45,7 @@ exports.capturePayment=async(req,res)=>{
         try {
             // console.log("Printing the courseId",course_id);
             
-            course = await Course.findById(course_id); // // course_id is string__> course_id.courseId --> now cousre_id itself having the multiple course Id 
+            course = await Course.findById(course_id); // // course_id is string ---> course_id.courseId --> now cousre_id itself having the multiple course Id 
             // console.log("Printing the course from cpture payment ",course);
 
             if(!course){
@@ -57,7 +59,7 @@ exports.capturePayment=async(req,res)=>{
 
             // check if user already pay for this course --> same user same couser buy kartoy ka te check karnysathi use kelay 
             // user Id string madhun Objectid madhe convert karnyasati --> mongoose cha use krt ahe 
-            const uid = new mongoose.Types.ObjectId(userId);
+            const uid = new mongoose.Types.ObjectId(userId); // yala convert  kel naste tari kahi problem ala nasta -->Mongoose will automatically cast strings to ObjectId in most queries:
 
             if(course.studentEnrolled.includes(uid)){
                 return res.status(400).json({
@@ -85,7 +87,7 @@ exports.capturePayment=async(req,res)=>{
     // Curency is not required in the Test API of razorpay --> currenncy:"INR",
         const options ={
             amount: totalAmount*100, // this is a syntax of razorpay of adding RUppes 
-            //currenncy:"INR",
+            // currenncy:"INR",
             receipt:Math.random(Date.now()).toString()
         }
 
@@ -132,14 +134,17 @@ exports.verifyPayment = async(req,res)=>{
     const userId = req.user.id;
 
 
-    if(!razorpay_order_id || !razorpay_payment_id|| razorpay_signature||!courses|| !userId){
+    if(!razorpay_order_id || !razorpay_payment_id|| !razorpay_signature||!courses|| !userId){
         res.status(200).json({
             success:false,
             message:"Payment Failed  All fieldsare required "
         })
     };
 
-    // 
+    // Thi is the syntax of razorpay to verify the signature
+    //  razorpay_order_id + "|" + razorpay_payment_id
+    // create the hmac object using crypto 
+    // create the body using order id and payment id
     let body = razorpay_order_id + "|" + razorpay_payment_id;
 
     // threee bekar line 
@@ -150,9 +155,8 @@ exports.verifyPayment = async(req,res)=>{
 
     // if expected signature and actual signature match zale ==> success ==> student la enrolled ker 
     if(expectedSignature === razorpay_signature){
-        // enroll the studen t
+        // enroll the student --> call the function 
         await enrollStudent(courses,userId,res);
-
 
         // return res
         return res.status(200).json({
@@ -167,8 +171,6 @@ exports.verifyPayment = async(req,res)=>{
 
 
 };
-
-
 
 // enroll the student
 const enrollStudent =async(courses,userId,res)=>{
@@ -185,8 +187,10 @@ const enrollStudent =async(courses,userId,res)=>{
     for(const courseId of courses){
 
         try {
-             // find the student and enrolled the studnet in it 
+         // find the student and enrolled the studnet in that course ---> 
         const enrolledCourse = await Course.findOneAndUpdate({_id:courseId},{$push:{studentEnrolled:userId}},{new:true});
+
+        //$push:{} --> This is a MongoDB update operator that adds (appends) a value into an array field.
 
         // new true ==> updated response dete 
         if(!enrolledCourse){
@@ -197,6 +201,7 @@ const enrollStudent =async(courses,userId,res)=>{
         };
 
         // find the student and add the course to their list of Enrolled Courses 
+        // userId na stufent find kela ani tyala course chya Array madhe add kela
         const enrolledStudent = await User.findByIdAndUpdate(userId,{$push:{courses :courseId}},{new:true});
 
 
@@ -206,6 +211,7 @@ const enrollStudent =async(courses,userId,res)=>{
            `Successfully Enroled into ${enrolledCourse.courseName}`,
            courseEnrollmentEmail(enrolledCourse.courseName, `${enrollStudent.firstName && enrolledStudent.lastName}` ) 
         );
+        
         console.log("Email send succesfuly to Enrolled student ", emailResponse);
         } catch (error) {
             console.log("error",error);
@@ -221,6 +227,7 @@ const enrollStudent =async(courses,userId,res)=>{
 
 // send mail after payment success
 exports.sendPaymentSuccessEmail=async(req,res)=>{
+    console.log("Entering in the SendPaymentSuccessEmail Controller");
     const {orderId,paymentId,amount} = req.body;
 
     const userId = req.user.id;
@@ -237,11 +244,17 @@ exports.sendPaymentSuccessEmail=async(req,res)=>{
         // find studen 
         const enrolledStudent = await User.findById(userId);
 
-        await mailSender(enrollStudent.email,
+        await mailSender(enrolledStudent.email,
             `Payment  Recieved`,
             paymentSuccessEmail(`${enrolledStudent.firstName}`, amount/100,orderId,paymentId)
 
         );
+        console.log("Email is send succesfully -->");
+        return res.status(200).json({
+            success:true,
+            message:"Email is send succesfully to student"
+        });
+
     } catch (error) {
         console.log("error in sending mail",error);
         return res.status(500).json({

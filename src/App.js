@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/common/Navbar";
@@ -27,20 +26,18 @@ import Catlog from "./pages/Catlog.jsx";
 
 import CourseDetails from "./pages/CourseDetails.jsx";
 
-
 const App = () => {
   const { user } = useSelector((state) => state.profile);
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-      
       <Navbar />
 
       <Routes>
         {/* This is the home page  */}
         <Route path="/" element={<Home />} />
         <Route path="/catalog/:catlogname" element={<Catlog />} />
-        <Route path="/courses/:courseId" element={<CourseDetails/>} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
 
         <Route
           path="signup"
@@ -69,6 +66,7 @@ const App = () => {
             </OpenRoute>
           }
         />
+
         <Route
           path="update-password/:id"
           element={
@@ -100,9 +98,11 @@ const App = () => {
         {/* /contact form page  */}
         <Route path="/contact" element={<Contact />} />
 
-        {/* after login wala route */}
 
-        {/* route madhe Dashboard render krt ahe --> tyat ch NESTED ROUTE render ker ahe  */}
+        {/* After login wala route */}
+
+        {/* route madhe Dashboard render krt ahe --> tyat ch NESTED ROUTE render kel ahe  */}
+
         <Route
           element={
             <PrivateRoute>
@@ -124,16 +124,21 @@ const App = () => {
               />
             </>
           )}
-            {/*jevha account type --> instructor hoil tevhach addCourse hi Route Instructor la dakhav  */}
+          {/*jevha account type --> instructor hoil tevhach addCourse hi Route Instructor la dakhav  */}
           {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
             <>
               <Route path="dashboard/add-course" element={<AddCourse />} />
               <Route path="dashboard/my-courses" element={<MyCourses />} />
-              <Route path="dashboard/edit-course/:courseId" element={<EditCourse />} />
+              <Route
+                path="dashboard/edit-course/:courseId"
+                element={<EditCourse />}
+              />
             </>
           )}
-          
         </Route>
+
+
+        {/* PENDING ROUTE FOR ---> ADMIN  */}
 
         {/* if Page is not found */}
         <Route path="*" element={<Error />} />

@@ -80,7 +80,7 @@ export async function buyCourse(token,courses,userDetails,navigate,dispatch){
             handler: function(response){
                 // send succesfull wala mail 
 
-                sendPaymentSuccessEmail(response,orderResposne.data.amount)(response,orderResposne.data.data.amount,token);
+                sendPaymentSuccessEmail(response,orderResposne.data.message.amount,token);
 
                 //verify payment 
                 verifyPayment({...response,courses}, token,navigate,dispatch);
@@ -113,7 +113,7 @@ export async function buyCourse(token,courses,userDetails,navigate,dispatch){
 };
 
 //email send 
-async function sendPaymentSuccessEmail({response,amount,token}){
+async function sendPaymentSuccessEmail(response,amount,token){
     console.log("entering in the sending mail to studnet for purcheing course")    
     try {
         // send mail 
@@ -124,7 +124,7 @@ async function sendPaymentSuccessEmail({response,amount,token}){
         },{
             Authorization:`Bearer ${token}`
         });
-        console.log("Payment succesfull Email is send ")
+        console.log("Payment succesfull Email is send ");
 
     } catch (error) {
         console.log("PAYMENT SUCESS EMAIL ERROR....",error);
@@ -157,7 +157,7 @@ async function verifyPayment(bodyData,token,navigate,dispatch){
         // 
         dispatch(resetCart());
 
-
+        console.log("Verifying payment Response ",response);
 
     } catch (error) {   
         console.log("PAYMENT VERIFY ERROR-->",error);

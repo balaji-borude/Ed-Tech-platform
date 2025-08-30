@@ -1,4 +1,3 @@
-// This will prevent authenticated users from accessing this route
 // non_LoggedIn and Logged In both  user can go to this Route 
 
 import { useSelector } from "react-redux"

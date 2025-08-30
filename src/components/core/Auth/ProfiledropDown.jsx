@@ -16,7 +16,8 @@ export default function ProfileDropdown() {
 
   const ref = useRef(null);
 
-  useOnClickOutside(ref, () => setOpen(false))
+  // bahet kothe hi click kel tr dropdown close hoil
+  useOnClickOutside(ref, () => setOpen(false));
 
   if (!user) return null; // if there is no user then there is noting to show 
 

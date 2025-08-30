@@ -191,7 +191,8 @@ exports.updateDisplayPicture = async (req, res) => {
 // check this route --> after payment Integration 
 exports.getEnrolledCourses = async (req, res) => {
     try {
-      const userId = req.user.id
+      const userId = req.user.id;
+
       const userDetails = await User.findOne({
         _id: userId,
       })
@@ -202,7 +203,7 @@ exports.getEnrolledCourses = async (req, res) => {
       if (!userDetails) {
         return res.status(400).json({
           success: false,
-          message: `Could not find user with id: ${userDetails}`,
+          message: `Could not find user with id: ${userId}`,
         })
       };
 
