@@ -4,7 +4,7 @@ import RenderTotalAmmount from "./RenderTotalAmmount";
 
 export default function Cart() {
 
-    const {total,totalItems} = useSelector((state)=>state.auth);
+    const {total,totalItems} = useSelector((state)=>state.cart);
     // if any loginc regarding to loading is possiblke check it out 
 
     return(

@@ -1,96 +1,177 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { buyCourse } from '../services/operations/studenFeaturesApi';import { fetchCourseDetails } from '../services/operations/courseDetailsAPI';
-import GetAvgRating from '../utils/avgRating';
-import Error from './Error';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { buyCourse } from "../services/operations/studenFeaturesApi";
+import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
+import GetAvgRating from "../utils/avgRating";
+import Error from "./Error";
+import ConfirmationModal from "../components/common/ConfirmationModal.jsx";
+import RatingStars from "../components/common/RatingStars";
+import {formatDate} from '../services/formatDate.js';
+
+import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
+
 
 
 
 const CourseDetails = () => {
-    
-    const {loading}= useSelector((state)=>state.profile);
-     const {paymentLoading} = useSelector((state)=>state.course);
+  const { loading, user } = useSelector((state) => state.profile);
+  const { paymentLoading } = useSelector((state) => state.course);
+  const { token } = useSelector((state) => state.auth);
 
-    const {user} = useSelector((state)=>state.profile);
-    const {token} = useSelector((state)=>state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { courseId } = useParams();
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const {courseId} = useParams(); // course Id params madhun ghetli 
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
+  const [courseData, setCourseData] = useState(null);
 
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
+  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
 
-    const [courseData,setCourseData]= useState(null);
-    
-    // we have to get data firsly
-    useEffect(()=>{
-        const getCourseFullDetails = async()=>{
+  // fetch course details
+  useEffect(() => {
+    if (!courseId) return; // if courseId is not present, exit early
 
-            try{
-                // api call 
-                const result = await fetchCourseDetails(courseId);
+    const getCourseFullDetails = async () => {
+      try {
+        const result = await fetchCourseDetails(courseId);
+        console.log("API result:", result);
 
-                // set data  in coursedata state
-                setCourseData(result);
-            }catch(error){
-                console.log("Could not fetch course details");
-            }   
-        }
-    },[courseId]);
+        // if (result?.success && result.courseDetails?.length > 0) {
+        //   // store just the single course object
+        //   setCourseData(result.courseDetails[0]);
+        // } else {
+        //   setCourseData(null);
+        // }
+        setCourseData(result.courseDetails[0]);
+      } catch (error) {
+        console.log("Could not fetch course details", error);
+        // setCourseData(null);
+      }
+    };
 
+    getCourseFullDetails();
+  }, [courseId]);
 
-    // avg review count
-    const [avgReviewCount,setAvgReviewCount] = useState(0);
-    
-        // use effect for avg review count
-        useEffect(()=>{
-            const count = GetAvgRating(courseData?.data?.CourseDetails.ratingAndReviews);
-            setAvgReviewCount(count);
-        },[courseData]);
+  // avg review count
+  useEffect(() => {
+    if (courseData?.ratingAndReviews) {
+      const count = GetAvgRating(courseData.ratingAndReviews);
+      setAvgReviewCount(count);
+    }
+  }, [courseData]);
 
+  // total lectures ==> calcualte total lectures from all sections]
 
-    // for total lecture 
-    const[totalNoOfLectures,setTotalNoOfLectures] = useState(0);
-    
-    useEffect(()=>{
-        let lectures =0;
-      response?.data?.CourseDetails?.courseContent?.forEach((sec)=>{
-        lectures += sec?.subSection?.length;
-      })
+  useEffect(() => {
+    if (courseData?.courseContent) {
+      let lectures = 0;
+      courseData.courseContent.forEach((sec) => {
+        lectures += sec?.subSection?.length || 0;
+      });
       setTotalNoOfLectures(lectures);
-    },[courseData]);
+    }
+  }, [courseData]);
 
-    // to update 
-        // razorpay function
-    const handleByCourse =()=>{
-        if(token){
-            buyCourse(token,[courseId],user,navigate, dispatch);
-        }
-    };
-
-    if(loading||!courseData){
-        return<div> Loading .....</div>
-    };
-
-    if(!courseData?.success){
-        return <Error/>
+  // razorpay function
+  const handleByCourse = () => {
+    if (token) {
+      buyCourse(token, [courseId], user, navigate, dispatch);
+      return;
     }
 
+    // modal data => for opening confirmation modal
+    setConfirmationModal({
+      text1: "You are Not Logged in",
+      text2: "Please Login to purchase the Course",
+      btn1Text: "Login",
+      btn2Text: "Cancel",
+      btn1Handler: () => navigate("/login"),
+      btn2Handler: () => setConfirmationModal(false),
+    });
+  };
+
+  if (loading || !courseData) {
+    return <div> Loading .....</div>;
+  }
+
+  // destructure after state is set
+  const {
+    _id:course_id,
+    courseName,
+    courseDescription,
+    thumbnail,
+    price,
+    whatYouWillLearn,
+    courseContent,
+    ratingAndReviews,
+    instructor,
+    studentEnrolled,
+    createdAt,
+  } = courseData;
+
   return (
-    <div>
+    <div className="text-richblack-50">
 
-        {/* <button className='bg-yellow-50 mt-10 p-3 rounded-xl'
-            onClick={()=>handleByCourse()}
-        >
-            Buy now
-        </button> */}
 
-        <div className='relative '>
+      <div className="relative  flex  flex-col items-center ">
+            <p>{courseName}</p>
+            <p>{courseDescription}</p>
+
+            <div>
+                <span>
+
+                    <p> {avgReviewCount}</p>
+                    <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
+                    <span>{`(${ratingAndReviews?.length || 0}) reviews`} </span>
+
+                    <span>
+                    {`(${studentEnrolled?.length || 0}) Students Enrolled`}{" "}
+                    </span>
+
+                </span>
+
+            </div>
+
+            <div>
+
+                <p> Created By  {`${instructor.firstName}`} </p>
+            </div>
+            <div>
+                <p>
+                    Created At :{formatDate(createdAt)}
+
+                </p>
+
+                {/*  */}
+                <p>Language English </p>
+            </div>
 
         </div>
-    </div>
-  )
-}
 
-export default CourseDetails
+
+        {/* Card components   */}
+        <div>
+            <CourseDetailsCard course={courseData} setConfirmationModal={setConfirmationModal} 
+            handleByCourse={handleByCourse}/>
+        </div>
+
+
+
+      {/* Buy Button */}
+      {/* <button
+        className="bg-yellow-50 mt-10 p-3 rounded-xl"
+        onClick={handleByCourse}
+      >
+        Buy now
+      </button> */}
+
+      {/* Confirmation Modal */}
+      {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
+    </div>
+  );
+};
+
+export default CourseDetails;

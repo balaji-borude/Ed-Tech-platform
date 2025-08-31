@@ -65,7 +65,7 @@ export async function buyCourse(token,courses,userDetails,navigate,dispatch){
 
         // option 
         const options ={
-            key:"",  //--> this is from fronedn -->  process.env.REACT_APP_RAZORPAY_KEY   --> process.env.RAZORPAY_KEY, best approach 1. Create an endpoint in backend 2. fetch in fronend;
+            key:"rzp_test_RB8kBp4YKQcINU",  //--> this is from fronedn -->  process.env.REACT_APP_RAZORPAY_KEY   --> process.env.RAZORPAY_KEY, best approach 1. Create an endpoint in backend 2. fetch in fronend;
 
             currency:orderResposne.data.message.currency,
             amount:`${orderResposne.data.message.amount}`,

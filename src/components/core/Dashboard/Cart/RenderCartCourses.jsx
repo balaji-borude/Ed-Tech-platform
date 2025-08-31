@@ -8,9 +8,11 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import {removeFromCart} from '../../../../slices/cartSlice'
 
 const RenderCartCourses = () => {
+
     const{cart} = useSelector((state)=>state.cart);
 
     const dispatch = useDispatch();
+    
   return (
     <div>
         {
@@ -41,7 +43,7 @@ const RenderCartCourses = () => {
                                 />
 
                                 {/* review count  */}
-                                <span>{course?.ratingAndReview?.length} Ratings  </span>
+                                <span>{course?.ratingAndReviews?.length} Ratings  </span>
 
                             </div>
                         </div>
