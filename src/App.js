@@ -25,7 +25,8 @@ import EditCourse from "./components/core/Dashboard/EditCourse/index.js";
 import Catlog from "./pages/Catlog.jsx";
 
 import CourseDetails from "./pages/CourseDetails.jsx";
-
+import ViewCourse from "./pages/ViewCourse.jsx";
+import VideoDetails from './components/core/viewCourse/VideoDetails.jsx'
 const App = () => {
   const { user } = useSelector((state) => state.profile);
 
@@ -136,6 +137,21 @@ const App = () => {
             </>
           )}
         </Route>
+
+          <Route element={
+            <PrivateRoute>
+              <ViewCourse/>
+            </PrivateRoute>
+          }>
+            {
+              user?.accountType===ACCOUNT_TYPE.STUDENT && (
+                <>
+                  <Route path="view-course/:courseId/section/:sectionId/sub-section/:sebSectionId" element={<VideoDetails/> }/>
+                </>
+              )
+            }
+            
+          </Route>
 
 
         {/* PENDING ROUTE FOR ---> ADMIN  */}
