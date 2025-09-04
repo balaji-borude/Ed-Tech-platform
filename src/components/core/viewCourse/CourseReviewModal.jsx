@@ -3,11 +3,16 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux'
 import ReactStars from "react-rating-stars-component";
 
+import IconBtn from '../../common/IconBtn';
+import {createRating} from '../../../services/operations/courseDetailsAPI.js'
 
 const CourseReviewModal = ({setReviewModal}) => {
 
     const{user} = useSelector((state)=>state.profile);
     const{token} = useSelector((state)=>state.auth);
+
+    // yatun 
+    const {courseEntireData} = useSelector((state)=>state.viewCourse);
 
 
 
@@ -24,9 +29,19 @@ const CourseReviewModal = ({setReviewModal}) => {
             setValue("courseRating",0);
         })
 
-    //onsubmit form 
-    const onSubmit =()=>{
+        
+    //onsubmit form --save vr click kelyavr kay kel pahije 
+    const onSubmit =async(data)=>{
+        //1. review chi entry db mahde entry create karne 
+        await createRating({
+            courseId:courseEntireData._id,
+            rating:data.courseExperience,
+            review:data.courseExperience,
+        
+        },token);
 
+        //2 modal close karne 
+        setReviewModal(false);
     };
 
 
@@ -99,8 +114,29 @@ const CourseReviewModal = ({setReviewModal}) => {
 
                             className='form-style min-h-[130px] w-full '
                         />
+                        {
+                            errors.courseExperience&&(
+                                <span className='text-pink-200'>
+                                     Please add Your Experience
+                                     </span>
+                            )
+                        }
                     </div>
 
+                        {/* buttons
+                         */}
+
+                    
+                    <div>
+                        <button onClick={()=>setReviewModal(false)}>
+                            Cancel 
+                        </button>
+
+                        <IconBtn
+                            text="save"
+                            // onClick={}
+                        />
+                    </div>
                 </form>
 
             </div>

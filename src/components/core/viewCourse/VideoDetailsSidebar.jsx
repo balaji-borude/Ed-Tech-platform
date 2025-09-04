@@ -16,8 +16,8 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
     const {sectionId,subSectionId} = useParams();
 
     const {
-        courseSectiondata,
-        courseEntiredata,
+        courseSectionData,
+        courseEntireData,
         totalNoOfLectures,
         completedLectures
     } = useSelector((state)=>state.viewCourse);
@@ -28,22 +28,22 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
         // this is new Syntax 
         ;(()=>{
             // video find karaycha --> section chi length 
-            if(!courseSectiondata.length){
+            if(!courseSectionData.length){
                 return;
             };
             // section cha ndex kadhla baher
-            const currentSectionIndex = courseSectiondata.findIndex((data)=>data._id === sectionId);
+            const currentSectionIndex = courseSectionData.findIndex((data)=>data._id === sectionId);
 
             // curent seubsectio cha index  find kert ahe 
             const currentSubsectionIndex = courseSectiondata?.[currentSectionIndex]?.subSection.findIndex((data)=> data._id === subSectionId);
 
             // curernt Active subsection --> Ji video la click kel ahe ti 
 
-            const activeSubsectionId = courseSectiondata[currentSectionIndex]?.subSection.[currentSubsectionIndex]?._id;
+            const activeSubsectionId = courseSectionData[currentSectionIndex]?.subSection.[currentSubsectionIndex]?._id;
 
 
             // set  current sectionm here 
-            setActiveStatus(courseSectiondata?.[currentSectionIndex]?._id);
+            setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
             // set current Subsection here 
             setVideoBarActive(activeSubsectionId);
 
@@ -51,7 +51,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
         })();
 
 
-    },[courseSectiondata,courseEntiredata,location.pathname]);
+    },[courseSectionData,courseEntireData,location.pathname]);
 
 
   return (
@@ -86,7 +86,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
 
                 {/* for heading and tiitle  */}
                 <div>
-                        <p>{courseEntiredata?.courseName}</p>
+                        <p>{courseEntireData?.courseName}</p>
 
                         <p>{completedLectures.length}/{totalNoOfLectures} </p>
 
@@ -121,7 +121,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
                                         key={index}
 
                              onClick={()=>{
-                               navigate(`/view-course/${courseEntiredata?._id}/section/:sectionId/sub-section/:subSectionId`)
+                               navigate(`/view-course/${courseEntireData?._id}/section/:sectionId/sub-section/:subSectionId`)
 
                                setVideoBarActive(topic?._id);
                                         }}
