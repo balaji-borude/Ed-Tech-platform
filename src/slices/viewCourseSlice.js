@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   courseSectionData: [],
-  courseEntireData: [],
+  courseEntireData: {},  // check here we want array or what -->< TODOOOO 
   completedLectures: [],
   totalNoOfLectures: 0,
 }

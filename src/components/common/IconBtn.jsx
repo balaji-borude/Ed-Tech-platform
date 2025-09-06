@@ -2,7 +2,7 @@ import React from 'react'
 
 const IconBtn = ({
     text,
-    onClick,  // ✅ Corrected from "onCllick"
+    onClick,  
     children,
     disabled,
     outline = false,
@@ -28,6 +28,7 @@ const IconBtn = ({
                     <span className={`${outline && "text-yellow-50"}`}>
                         {text}
                     </span>
+                    
                     {children}
                 </>
             ) : (

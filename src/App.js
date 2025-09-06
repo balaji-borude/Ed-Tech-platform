@@ -138,6 +138,8 @@ const App = () => {
           )}
         </Route>
 
+
+{/* View Course APi called --> when user buy course and want to see lecture -->  */}
           <Route element={
             <PrivateRoute>
               <ViewCourse/>
@@ -146,7 +148,7 @@ const App = () => {
             {
               user?.accountType===ACCOUNT_TYPE.STUDENT && (
                 <>
-                  <Route path="view-course/:courseId/section/:sectionId/sub-section/:sebSectionId" element={<VideoDetails/> }/>
+                  <Route path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId" element={<VideoDetails/> }/>
                 </>
               )
             }

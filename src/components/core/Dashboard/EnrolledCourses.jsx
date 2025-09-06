@@ -27,6 +27,11 @@ const EnrolledCourses = () => {
 
   const navigate = useNavigate();
 
+
+  console.log("Printing the enroled Courrses ");
+  console.log(enrolledCourses);
+
+
   return (
     <div className="text-white">
       <h2> Enrolled courses </h2>
@@ -55,7 +60,7 @@ const EnrolledCourses = () => {
                     <div className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-8 "
                     // this is used for routing to view the lecture of enroled courses 
                     onClick={()=>{
-                      navigate(`/view-courses/${course?.id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`)
+                      navigate(`/view-course/${course?._id}/section/${course.courseContent?.[0]._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`)
                     }}
                     >
                       <img src={course.thumbnail} alt="thumbnail name " />

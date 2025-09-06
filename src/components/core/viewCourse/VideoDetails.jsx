@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI.js";
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice.js";
+import IconBtn from "../../common/IconBtn.jsx";
 
-// video player 
-import { Player } from "video-react";
-import '~video-react/dist/video-react.css';
-import { FaPlay } from "react-icons/fa6";
+import { useLocation } from "react-router-dom";
 
+// video player
+import { Player, BigPlayButton, ControlBar } from "video-react";
+import "video-react/dist/video-react.css";
+import ErrorBoundary from "./ErrorBoundary.js";
+// import { FaPlay } from "react-icons/fa6";
 
 const VideoDetails = () => {
   //1 . video component s
@@ -26,9 +29,21 @@ const VideoDetails = () => {
 
   const { token } = useSelector((state) => state.auth);
 
+  const location = useLocation();
+
   // VIEW COURSE --> slice  madhun data ghetle ahe =========>
-  const { courseSectionData, courseEntireData, completedLectures } =
-    useSelector((state) => state.viewCourse);
+  // const { courseSectionData, courseEntireData, completedLectures } =
+  //   useSelector((state) => state.viewCourse);
+
+  const courseEntireData = useSelector(
+    (state) => state.viewCourse.courseEntireData
+  );
+  const courseSectionData = useSelector(
+    (state) => state.viewCourse.courseSectionData
+  );
+  const completedLectures = useSelector(
+    (state) => state.viewCourse.completedLectures
+  );
 
   // video data
   const [videoData, setVideoData] = useState([]);
@@ -48,17 +63,34 @@ const VideoDetails = () => {
         // if we have all three field are present then ==>
 
         // lets assume --> basiclly UI wr konti video fetch karaychi te dakhavnysathi hekrt ahe
-        const filterData = courseSectionData.filter(
-          (course) => course._id === sectionId
+        // const filterData = courseSectionData.filter(
+        //   (course) => course._id === sectionId
+        // );
+
+        // //
+        // const filterVideoData = filterData[0].subSection.filter(
+        //   (data) => data._id === subSectionId
+        // );
+
+        // setVideoData(filterVideoData[0]);
+
+        const section = courseSectionData.find((sec) => sec._id === sectionId);
+        if (!section) {
+          console.warn("Section not found for sectionId:", sectionId);
+          return;
+        }
+
+        const video = section.subSection?.find(
+          (sub) => sub._id === subSectionId
         );
 
-        //
-        const filterVideoData = filterData[0].subSection.filter(
-          (data) => data._id === subSectionId
-        );
+        console.log("video in videoDetails", video);
+        if (!video) {
+          console.warn("Video not found for subSectionId:", subSectionId);
+          return;
+        }
 
-        setVideoData(filterVideoData[0]);
-        setVideoData(false);
+        setVideoData(video);
       }
     };
 
@@ -210,100 +242,93 @@ const VideoDetails = () => {
 
   // vido la parat shart karne
   const reWatch = () => {
-    if(playerRef?.current){
-      playerRef.current?.seek(0); // chagpt bolte sabko kolte 
-      setVideoEnded(false); 
+    if (playerRef?.current) {
+      playerRef.current?.seek(0); // chagpt bolte sabko kolte
+      setVideoEnded(false);
     }
-
   };
-  
+
   return (
-    <div>
+    <div className="text-richblack-5">
       {!videoData ? (
         <div> No Data Found </div>
       ) : (
         <div>
           {/* video player  */}
-          <Player>
-            ref={playerRef}
-            aspectRatio = "16:9"
-            playsInline
-            onEnded={()=>setVideoEnded(true)}
-            <source src={videoData?.videoUrl} />
+          <ErrorBoundary>
 
-            <FaPlay  />
+            <Player
+              ref={playerRef}
+              aspectRatio="16:9"
+              playsInline
+              onEnded={() => setVideoEnded(true)}
+            >
+              <source src={videoData?.videoUrl} />
+              <BigPlayButton position="center" />
+              <ControlBar autoHide={true} disableDefaultControls={false} />
+            </Player>
+            
+          </ErrorBoundary>
 
+          {/* This is Extra Ui ==> Do not place it in Player   */}
+          {/* video jr end zali tr  */}
+          {videoEnded && (
+            <div>
+              {!completedLectures.includes(subSectionId) && (
+                <IconBtn
+                  // disabled={loading}   // ------> This is how devs prevent users from spamming a button
+                  onClick={() => handleLectureCompletion()}
+                  text={loading ? "Mark as completed" : "Loading"}
+                />
+              )}
 
-            {/* video jr end zali tr  */}
-            {
-              videoEnded && (
+              {/* Rewatch wala btn */}
+              <IconBtn
+                // disabled={loading}
+                onClick={() => reWatch()}
+                text="Rewatch"
+                customClasses="text-xl"
+              />
+
               <div>
                 {
-                  !completedLectures.includes(subSectionId) &&(
-                    <IconBtn
-                      disabled={loading}
-                      onClick={()=> handleLectureCompletion()} 
-                      text={loading?"Mark as completed" : "Loading"}
-                    />
+                  // jr pahjili video nasel trch prev button dakhavnar nahit rnahi dakhavnar
+
+                  !isFirstVideo() && (
+                    <button
+                      // disabled={loading}
+                      onClick={() => goToPrevVideo()}
+                      // app.css madhe ahe
+                      className="blackButton"
+                    >
+                      prev
+                    </button>
                   )
-
-
                 }
 
-                {/* Rewatch wala btn */}
-                <IconBtn
-                  disabled={loading}
-                  onClick={()=> reWatch()}
-                  text="Rewatch"
-                  customClasses = "text-xl"
-                />
-
-                <div>
-                  {
-
-                    // jr pahjili video nasel trch prev button dakhavnar nahit rnahi dakhavnar 
-                    
-                    !isFirstVideo() &&(
-                      <button
-                        disabled={loading}
-                        onClick={()=> goToPrevVideo()}
-                        // app.css madhe ahe 
-                        className="blackButton"
-                      >
-                        prev
-                      </button>
-
-                    )
-                  }
-
-
-                  {!isLastVideo() &&(<button
-                        disabled={loading}
-                        onClick={()=> goToNextVideo()}
-                        // app.css madhe ahe 
-                        className="blackButton"
-                      >
-                        Next
-                      </button>)}
-                </div>
-
-
+                {!isLastVideo() && (
+                  <button
+                    // disabled={loading}
+                    onClick={() => goToNextVideo()}
+                    // app.css madhe ahe
+                    className="blackButton"
+                  >
+                    Next
+                  </button>
+                )}
               </div>
-              
-            )
-            }
-
-          </Player>
-
+            </div>
+          )}
         </div>
       )}
 
       <h1>
+        {" "}
+        Title==
         {videoData?.title}
       </h1>
 
       <p>{videoData?.description}</p>
-
     </div>
   );
 };
