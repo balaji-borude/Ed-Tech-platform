@@ -55,6 +55,10 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
     })();
   }, [courseSectionData, courseEntireData, location.pathname]);
 
+  console.log(
+    "printing the courseSectionData from VideoDetailsSidebar",
+    courseSectionData
+  );
   return (
     <div className="text-white">
       <div>
@@ -91,41 +95,35 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
         {/* for sections and subsections */}
         <div>
           {courseSectionData.map((section, index) => (
-            <div onClick={() => setActiveStatus(course?._id)} key={index}>
-              {/* Section  */}
-              <div>
-                <div>{section?.sectionName}</div>
-                {/* arrow wlaa icon add karne ahe  ==> handle roate logic */}
-              </div>
+            <div onClick={() => setActiveStatus(section._id)} key={index}>
+              {/* Section */}
+              <div>{section?.sectionName}</div>
 
-              {/* subsection logic  */}
-              <div>
-                {/* subsection logic */}
-                {activeStatus === section._id &&
-                  section?.subSection?.map((topic, index) => (
-                    <div
-                      className={`flex gap-3 p-4 ${
-                        videobarActive === topic._id
-                          ? "bg-yellow-200 text-richblack-900"
-                          : "bg-black text-white"
-                      }`}
-                      key={index}
-                      onClick={() => {
-                        navigate(
-                          `/view-course/${courseEntireData?._id}/section/${section._id}/sub-section/${topic._id}`
-                        );
-                        setVideoBarActive(topic?._id);
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={completedLectures.includes(topic?._id)}
-                        onChange={() => {}}
-                      />
-                      <span>{topic.title}</span>
-                    </div>
-                  ))}
-              </div>
+              {/* Subsections */}
+              {activeStatus === section._id &&
+                section?.subSection?.map((topic, index) => (
+                  <div
+                    className={`flex gap-3 p-4 ${
+                      videobarActive === topic._id
+                        ? "bg-yellow-200 text-richblack-900"
+                        : "bg-black text-white"
+                    }`}
+                    key={index}
+                    onClick={() => {
+                      navigate(
+                        `/view-course/${courseEntireData?._id}/section/${section._id}/sub-section/${topic._id}`
+                      );
+                      setVideoBarActive(topic?._id);
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={completedLectures.includes(topic?._id)}
+                      onChange={() => {}}
+                    />
+                    <span>{topic.title}</span>
+                  </div>
+                ))}
             </div>
           ))}
         </div>
