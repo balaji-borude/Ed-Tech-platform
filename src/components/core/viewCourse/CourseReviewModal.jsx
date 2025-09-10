@@ -35,7 +35,7 @@ const CourseReviewModal = ({setReviewModal}) => {
         //1. review chi entry db mahde entry create karne 
         await createRating({
             courseId:courseEntireData._id,
-            rating:data.courseExperience,
+            rating:data.courseRating,
             review:data.courseExperience,
         
         },token);

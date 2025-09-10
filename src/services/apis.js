@@ -13,6 +13,8 @@ export const endpoints = {
 export const profileEndpoints = {
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
+
+  GET_INSTRUCTOR_DATA: BASE_URL +"/profile/instructorDashboard"
 }
 
 // STUDENTS ENDPOINTS
@@ -44,7 +46,7 @@ export const courseEndpoints = {
 
   GET_FULL_COURSE_DETAILS_AUTHENTICATED:BASE_URL + "/course/getFullCourseDetails",
   
-  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress", // course update chi api call
   CREATE_RATING_API: BASE_URL + "/course/createRating",
 }
 

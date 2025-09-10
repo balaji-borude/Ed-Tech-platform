@@ -289,7 +289,8 @@ export const fetchInstructorCourses = async (token) => {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("INSTRUCTOR COURSES API RESPONSE............", response)
+    console.log("INSTRUCTOR all COURSES API RESPONSE............", response);
+    
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Instructor Courses")
     }
@@ -381,6 +382,10 @@ export const markLectureAsComplete = async (data, token) => {
   toast.dismiss(toastId)
   return result
 }
+
+
+
+
 
 // create a rating for course
 export const createRating = async (data, token) => {

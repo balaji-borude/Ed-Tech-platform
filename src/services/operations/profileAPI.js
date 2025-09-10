@@ -5,7 +5,13 @@ import { apiConnector } from "../apiconnector"
 import { profileEndpoints } from "../apis"
 import { logout } from "./authAPI"
 
-const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API } = profileEndpoints
+const { 
+
+  GET_USER_DETAILS_API, 
+  GET_USER_ENROLLED_COURSES_API,
+  GET_INSTRUCTOR_DATA 
+  
+} = profileEndpoints
 
 // get user details 
 export function getUserDetails(token, navigate) {
@@ -72,4 +78,26 @@ export async function getUserEnrolledCourses(token) {
   }
   toast.dismiss(toastId)
   return result
+}
+
+export async function getInstructorData (token){
+  const toastId = toast.loading("loading");
+  let result =[];
+
+  try {
+    const response = await apiConnector("GET",GET_INSTRUCTOR_DATA,null,{
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("GET INSTRUCTOR API RESPONSE _-->",response);
+    result = response.data.courses;
+
+  } catch (error) {
+    console.log("GET INSTRUCTOR API ERRROR--->",error);
+    toast.error("Could not get Instructor Data");
+
+  }
+  toast.dismiss(toastId);
+  return result;
 }

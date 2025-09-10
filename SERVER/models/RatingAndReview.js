@@ -4,7 +4,7 @@ const ratingAndReviewsSchema = new mongoose.Schema({
 
     user:{
         type:mongoose.Schema.Types.ObjectId,    // konta user Rating det ahe tyachi ID store keli ahe 
-        Ref:"User",
+        ref:"User",
         required:true
     },
     rating:{

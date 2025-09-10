@@ -27,6 +27,9 @@ import Catlog from "./pages/Catlog.jsx";
 import CourseDetails from "./pages/CourseDetails.jsx";
 import ViewCourse from "./pages/ViewCourse.jsx";
 import VideoDetails from './components/core/viewCourse/VideoDetails.jsx'
+import Instructor from "./components/core/Dashboard/InstructorDashboard/Instructor.jsx";
+
+
 const App = () => {
   const { user } = useSelector((state) => state.profile);
 
@@ -134,6 +137,10 @@ const App = () => {
                 path="dashboard/edit-course/:courseId"
                 element={<EditCourse />}
               />
+
+              {/* Instructor Dashboard path */}
+              <Route path="dashboard/instructor" element={<Instructor />} />
+
             </>
           )}
         </Route>

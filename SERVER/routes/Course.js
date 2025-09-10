@@ -2,6 +2,8 @@
 const express = require("express")
 const router = express.Router()
 
+
+const {updateCourseProgress} = require("../controllers/courseProgress");
 // Import the Controllers
 
 // Course Controllers Import
@@ -86,6 +88,10 @@ router.delete("/deleteCourse",deleteCourse);
 
 // Get Details for a Specific Courses
 router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+
+
+// route for saving courseProgrss 
+router.post("/updateCourseProgress",auth,isStudent,updateCourseProgress);
 
 
 // ********************************************************************************************************

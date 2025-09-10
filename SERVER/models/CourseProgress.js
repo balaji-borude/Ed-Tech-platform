@@ -6,6 +6,10 @@ const courseProgress = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:"Course"
   },
+  userId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"user"
+  },
 
   completedVideos:[   // student chi Prrogress kiti zali tyala eka Array madhe ghetla ---> yamdhe subSection Chi Id ghetli ahe --> subSection mahnjech --> kiti courese complete zala --> kiti video complete zale 
     

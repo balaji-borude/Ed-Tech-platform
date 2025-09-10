@@ -1,8 +1,11 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
+const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 require("dotenv").config();
 
+const {convertSecondsToDuration} = require('../utils/secToDuration')
+const CourseProgress = require('../models/CourseProgress')
 //update profile 
 exports.updateProfile = async(req,res) =>{
     try {
@@ -225,7 +228,7 @@ exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const userDetails = await User.findOne({ _id: userId })
+    let userDetails = await User.findOne({ _id: userId })
       .populate({
         path: "courses",
         populate: {
@@ -236,6 +239,91 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
+
+
+      // for Progress bar 
+      		// This section is for upadating the coursProgress section in enrolled courses
+	  // userDetails = userDetails.toObject()
+	  // var SubsectionLength = 0
+	  // for (var i = 0; i < userDetails.courses.length; i++) {
+		// let totalDurationInSeconds = 0
+		// SubsectionLength = 0
+		// for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+		//   totalDurationInSeconds += userDetails.courses[i].courseContent[
+		// 	j
+		//   ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
+		//   userDetails.courses[i].totalDuration = convertSecondsToDuration(
+		// 	totalDurationInSeconds
+		//   )
+		//   SubsectionLength +=
+		// 	userDetails.courses[i].courseContent[j].subSection.length
+		// }
+		// let courseProgressCount = await CourseProgress.findOne({
+		//   courseID: userDetails.courses[i]._id,
+		//   userId: userId,
+		// })
+		// courseProgressCount = courseProgressCount?.completedVideos.length
+		// if (SubsectionLength === 0) {
+		//   userDetails.courses[i].progressPercentage = 100
+		// } else {
+		//   // To make it up to 2 decimal point
+		//   const multiplier = Math.pow(10, 2)
+		//   userDetails.courses[i].progressPercentage =
+		// 	Math.round(
+		// 	  (courseProgressCount / SubsectionLength) * 100 * multiplier
+		// 	) / multiplier
+		// }
+	  // }
+
+    // This section is for updating the courseProgress section in enrolled courses
+userDetails = userDetails.toObject()
+var SubsectionLength = 0
+
+for (var i = 0; i < userDetails.courses.length; i++) {
+  let totalDurationInSeconds = 0
+  SubsectionLength = 0
+
+  // Loop through courseContent
+  for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+    totalDurationInSeconds += userDetails.courses[i].courseContent[j].subSection.reduce(
+      (acc, curr) => acc + parseInt(curr.timeDuration),
+      0
+    )
+
+    // Save total duration in hh:mm:ss
+    userDetails.courses[i].totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+
+    // Count total subsections
+    SubsectionLength += userDetails.courses[i].courseContent[j].subSection.length
+  }
+
+  // Fetch course progress for this user/course
+  const courseProgress = await CourseProgress.findOne({
+    courseId: userDetails.courses[i]._id,
+    userId: userId,
+  })
+
+  // Count completed videos safely
+  const courseProgressCount = courseProgress?.completedVideos?.length || 0
+
+  // Calculate progress %
+  if (SubsectionLength === 0) {
+    userDetails.courses[i].progressPercentage = 100
+  } else {
+    const multiplier = Math.pow(10, 2) // 2 decimal precision
+    userDetails.courses[i].progressPercentage =
+      Math.round((courseProgressCount / SubsectionLength) * 100 * multiplier) /
+      multiplier
+  }
+}
+
+
+
+
+
+
+
+
 
     if (!userDetails) {
       return res.status(400).json({
@@ -255,3 +343,38 @@ exports.getEnrolledCourses = async (req, res) => {
     });
   }
 };
+
+
+// userDashboard sathi controler banvat ahe 
+exports.instructorDashboard = async(req,res)=>{
+  try {
+    //course cha data
+    const courseDetails = await Course.find({instrctor:req.user.id});
+
+    const courseData = courseDetails.map((course)=>{
+      const totalStudentEnrolled = course.studentEnrolled.length;
+      const totalAmountGenerated = totalStudentEnrolled * course.price;
+
+      // create the a new additional field 
+      const courseDetailsStats = {
+        _id:course._id,
+        courseName:course.courseName,
+        totalStudentEnrolled,
+        totalAmountGenerated
+      }
+
+      return courseDetailsStats
+    })
+
+    res.status(200).json({
+      success:true,
+      courses:courseData
+    })
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message:"Internal Server Error "
+    })
+  } 
+} 

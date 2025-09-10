@@ -12,6 +12,7 @@ const crypto = require("crypto");
 const { courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
 
 const {paymentSuccessEmail}= require('../mail/templates/paymentSuccessEmail.js');
+const CourseProgress = require("../models/CourseProgress.js");
 
 
 
@@ -200,9 +201,23 @@ const enrollStudent =async(courses,userId,res)=>{
             })
         };
 
+        // user la coursePogress la empty arary set krave lagel na --> karan attach course vikat ghetla progress la empty karav lagel na  
+        const courseProgess = await CourseProgress.create({
+            courseId:courseId,
+            userId:userId,
+            completedVideos:[] // empty array kela completed videos la 
+        });
+
+
+        // courseProgess la enrolled stundent  document madhe update karave lagel na tyasathi khali updatae kel ahe 
+
+
         // find the student and add the course to their list of Enrolled Courses 
         // userId na stufent find kela ani tyala course chya Array madhe add kela
-        const enrolledStudent = await User.findByIdAndUpdate(userId,{$push:{courses :courseId}},{new:true});
+        const enrolledStudent = await User.findByIdAndUpdate(userId,{$push:{
+            courses :courseId,
+            courseProgres:courseProgess._id   // courseProgess la update kel means associate kel enrooled studnet sobat 
+        }},{new:true});
 
 
         // send the mail to student who buy the course 

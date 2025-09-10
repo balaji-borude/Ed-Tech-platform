@@ -75,11 +75,11 @@ const EnrolledCourses = () => {
 
                     {/* Progress bar div */}
                     <div>
-                      <p> Progress: {course.progressPercentage || 0} </p>
+                      <p> Progress: {course.progressPercentage} </p>
 
                       {/* Progress Bar  */}
                       <ProgressBar
-                        completed={course.progressPercentage || 0}
+                        completed={course.progressPercentage}
                         height="8px"
                         isLabelVisible={false}
                       />
