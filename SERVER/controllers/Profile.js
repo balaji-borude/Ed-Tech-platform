@@ -348,8 +348,13 @@ for (var i = 0; i < userDetails.courses.length; i++) {
 // userDashboard sathi controler banvat ahe 
 exports.instructorDashboard = async(req,res)=>{
   try {
+
+    const  id = req.user.id;
+    console.log("Printing Id from req.user for instructor Dashboard==>",id)
     //course cha data
-    const courseDetails = await Course.find({instrctor:req.user.id});
+    const courseDetails = await Course.find({instructor:id});
+
+    console.log("Instructor Dahbsorad controller res==>",courseDetails);
 
     const courseData = courseDetails.map((course)=>{
       const totalStudentEnrolled = course.studentEnrolled.length;
@@ -368,6 +373,7 @@ exports.instructorDashboard = async(req,res)=>{
 
     res.status(200).json({
       success:true,
+      message:"Instructor Dashboard data fetched succesfully",  
       courses:courseData
     })
 
