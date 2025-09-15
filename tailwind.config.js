@@ -124,15 +124,17 @@ module.exports = {
         900: "#141414",
       },
     },
-    extend: {
-      maxWidth: {
-        maxContent: "1260px",
-        maxContentTab: "650px",
-        backgroundImage: {
-          'custom-gradient': "linear-gradient(123.77deg, #8A2BE2 -6.46%, #FFA500 59.04%, #F8F8FF 124.53%)",
-        },
-      },
-    },
+extend: {
+  maxWidth: {
+    maxContent: "1260px",
+    maxContentTab: "650px",
+  },
+  backgroundImage: {
+    "custom-gradient":
+      "linear-gradient(123.77deg, #8A2BE2 -6.46%, #FFA500 59.04%, #F8F8FF 124.53%)",
+  },
+},
+
   },
   plugins: [],
 };

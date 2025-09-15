@@ -26,20 +26,20 @@ const ExploreMore = () => {
   };
 
   return (
-    <div className="">
+    <div className="relative w-11/12 mx-auto">
       
       {/* Explore more section */}
-      <div>
+      <div >
         <div className="text-4xl font-semibold text-center my-10 text-white">
           Unlock the
-          <HighLightText text={"Power of Code"} />
+          <HighLightText  className="text-4xl font-bold bg-gradient-to-tr from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] bg-clip-text text-transparent"  text={"Power of Code"} />
           <p className="text-center text-richblack-100 text-lg font-semibold mt-1">
             Learn to Build Anything You Can Imagine
           </p>
         </div>
       </div>
 
-      {/* Tabs Section */}
+      {/* Tabs Section   || */}
       <div className="hidden lg:flex gap-5 -mt-5 mx-auto w-max bg-richblack-800 text-richblack-200 p-1 rounded-full font-medium drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
         {tabsName.map((ele, index) => {
           return (
@@ -52,15 +52,15 @@ const ExploreMore = () => {
               key={index}
               onClick={() => setMyCards(ele)}
             >
-              {ele}
+              {ele} 
             </div>
           );
         })}
       </div>
-      <div className="hidden lg:block lg:h-[200px]"></div>
+      <div className="hidden  lg:block lg:h-[200px]"></div>
 
       {/* Cards Group */}
-      <div className=" flex -mt-40 lg:absolute gap-10 justify-center
+      <div className=" flex lg:-mt-40  lg:absolute gap-10 justify-center
       lg:gap-0  lg:justify-between flex-wrap w-full
        text-black lg:mb-0 mb-7 lg:px-0 px-3 ">
         {courses.map((ele, index) => {
