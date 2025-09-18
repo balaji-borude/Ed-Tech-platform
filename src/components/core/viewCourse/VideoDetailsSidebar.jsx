@@ -37,12 +37,12 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
       );
 
       // curent seubsectio cha index  find kert ahe
-      const currentSubsectionIndex = courseSectionData?.[
-        currentSectionIndex
-      ]?.subSection.findIndex((data) => data._id === subSectionId);
+      const currentSubsectionIndex =
+        courseSectionData?.[currentSectionIndex]?.subSection.findIndex(
+          (data) => data._id === subSectionId
+        );
 
       // curernt Active subsection --> Ji video la click kel ahe ti
-
       const activeSubsectionId =
         courseSectionData[currentSectionIndex]?.subSection[
           currentSubsectionIndex
@@ -59,19 +59,22 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
     "printing the courseSectionData from VideoDetailsSidebar",
     courseSectionData
   );
+
   return (
-    <div className="text-white">
+    <div className=" text-white flex flex-col gap-6 p-4 md:p-6 bg-richblack-800 rounded-md shadow-lg h-full overflow-y-auto">
       <div>
         {/* for buttons and heading div */}
-        <div>
+        <div className="flex items-center justify-between mb-4">
           {/* for buttons only  */}
-          <div>
+          <div className="flex gap-2">
             <div
+              className="cursor-pointer text-sm text-richblack-800 px-3 flex items-center border rounded-md hover:scale-105  bg-richblack-100"
               onClick={() => {
                 navigate("/dashboard/enrolled-courses");
               }}
+
             >
-              back
+              Back
             </div>
 
             <div>
@@ -81,32 +84,47 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
               />
             </div>
           </div>
-
-          {/* for heading and tiitle  */}
-          <div>
-            <p>{courseEntireData?.courseName}</p>
-
-            <p>
-              {completedLectures.length}/{totalNoOfLectures}{" "}
-            </p>
-          </div>
         </div>
 
-        {/* for sections and subsections */}
-        <div>
-          {courseSectionData.map((section, index) => (
-            <div onClick={() => setActiveStatus(section._id)} key={index}>
-              {/* Section */}
-              <div>{section?.sectionName}</div>
+        {/* for heading and tiitle  */}
+        <div className="mb-6">
+          <p className="font-semibold text-lg text-richblack-5">
+            {courseEntireData?.courseName}
+          </p>
+          <p className="text-sm text-richblack-200">
+            {completedLectures.length}/{totalNoOfLectures} Lectures Completed
+          </p>
+        </div>
+      </div>
 
-              {/* Subsections */}
-              {activeStatus === section._id &&
-                section?.subSection?.map((topic, index) => (
+      {/* for sections and subsections */}
+      <div className="flex flex-col gap-3">
+        {courseSectionData.map((section, index) => (
+          <div
+            onClick={() => setActiveStatus(section._id)}
+            key={index}
+            className="rounded-md border border-richblack-700 overflow-hidden"
+          >
+            {/* Section */}
+            <div
+              className={`px-4 py-3 cursor-pointer font-medium ${
+                activeStatus === section._id
+                  ? "bg-richblack-700 text-yellow-50"
+                  : "bg-richblack-900 text-richblack-200"
+              }`}
+            >
+              {section?.sectionName}
+            </div>
+
+            {/* Subsections */}
+            {activeStatus === section._id && (
+              <div className="flex flex-col">
+                {section?.subSection?.map((topic, index) => (
                   <div
-                    className={`flex gap-3 p-4 ${
+                    className={`flex items-center gap-3 px-4 py-2 text-sm cursor-pointer transition-all ${
                       videobarActive === topic._id
-                        ? "bg-yellow-200 text-richblack-900"
-                        : "bg-black text-white"
+                        ? "bg-yellow-200 text-richblack-900 font-semibold"
+                        : "bg-richblack-800 text-richblack-100 hover:bg-richblack-700"
                     }`}
                     key={index}
                     onClick={() => {
@@ -120,13 +138,15 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
                       type="checkbox"
                       checked={completedLectures.includes(topic?._id)}
                       onChange={() => {}}
+                      className="accent-yellow-200 cursor-pointer"
                     />
                     <span>{topic.title}</span>
                   </div>
                 ))}
-            </div>
-          ))}
-        </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -54,10 +54,10 @@ exports.signUp= async(req,res)=>{
         // find most resent OTP stored in user --> means DB  
 
         //const response = await OTP.find({ email }).sort({ createdAt: -1 });  // findOne()--> method gives an error
-        const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+        //const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+        const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 });
 
-
-        if (!response) {
+        if (!recentOtp) {
             return res.status(400).json({
                 success: false,
                 message: "No OTP found for this email"
@@ -68,22 +68,41 @@ exports.signUp= async(req,res)=>{
         // 2. sort({createdAt : -1}) -->  Sorts the results in descending order (newest first) based on the createdAt field.
         // 3. .limit(1)--> Ensures that only one document (the most recent one) is returned.
 
-        console.log("recent OTP in DB _----> ", response);
+        console.log("recent OTP in DB _----> ", recentOtp);
 
-            //validate Otp 
-        if (response.length === 0) {
-			// OTP not found for the email
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid fOr Length",
-			});
-		} else if (otp !== response[0].otp) {
-			// Invalid OTP
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid  ",
-			});
-		};
+
+        // OTP Expired 
+
+// Expiry check (5 minutes)
+const now = Date.now();
+if ((now - recentOtp.createdAt) / 1000 / 60 > 5) {
+    return res.status(400).json({
+        success: false,
+        message: "OTP expired, please request a new one",
+    });
+}
+
+// Value check (convert both to strings to avoid type mismatch)
+if (otp.toString() !== recentOtp.otp.toString()) {
+    return res.status(400).json({
+        success: false,
+        message: "The OTP is not valid",
+    });
+}
+        //     //validate Otp 
+        // if (response.length === 0) {
+		// 	// OTP not found for the email
+		// 	return res.status(400).json({
+		// 		success: false,
+		// 		message: "The OTP is not valid fOr Length",
+		// 	});
+		// } else if (otp !== response[0].otp) {
+		// 	// Invalid OTP
+		// 	return res.status(400).json({
+		// 		success: false,
+		// 		message: "The OTP is not valid  ",
+		// 	});
+		// };
 
         //Find the most recent OTP for the email
 

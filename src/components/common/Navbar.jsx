@@ -5,7 +5,7 @@ import logo from "../../assets/Logo/Logo-Full-Light.png";
 import { NavbarLinks } from "../../data/navbar-links";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { AiOutlineMenu, AiOutlineShoppingCart ,AiOutlineClose } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineShoppingCart, AiOutlineClose } from "react-icons/ai";
 import ProfiledropDown from "../core/Auth/ProfiledropDown";
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
@@ -74,9 +74,8 @@ const Navbar = () => {
 
   return (
     <div
-      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
-        location.pathname !== "/" ? "bg-richblack-800" : ""
-      } transition-all duration-200`}
+      className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${location.pathname !== "/" ? "bg-richblack-800" : ""
+        } transition-all duration-200`}
     >
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/*Logo  */}
@@ -94,11 +93,10 @@ const Navbar = () => {
                 {link.title === "Catalog" ? (
                   <>
                     <div
-                      className={`group relative flex cursor-pointer items-center gap-1 ${
-                        matchRoute("/catalog/:catalogName")
+                      className={`group relative flex cursor-pointer items-center gap-1 ${matchRoute("/catalog/:catalogName")
                           ? "text-yellow-25"
                           : "text-richblack-25"
-                      }`}
+                        }`}
                     >
                       <p>{link.title}</p>
 
@@ -135,11 +133,10 @@ const Navbar = () => {
                 ) : (
                   <Link to={link?.path}>
                     <p
-                      className={`${
-                        matchRoute(link?.path)
+                      className={`${matchRoute(link?.path)
                           ? "text-yellow-25"
                           : "text-richblack-25"
-                      }`}
+                        }`}
                     >
                       {link.title}
                     </p>
@@ -184,7 +181,7 @@ const Navbar = () => {
 
         </div>
 
-          {/* Mobile Hamburger */}
+        {/* Mobile Hamburger */}
         <button
           className="mr-4 md:hidden"
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -199,114 +196,94 @@ const Navbar = () => {
 
 
 
-          
-     {/* Mobile Menu */}
-{menuOpen && (
-  <div className="absolute top-14 left-0 z-[999] w-full bg-richblack-900 p-6 md:hidden">
-    <ul className="flex flex-col gap-4 text-richblack-25">
-      {NavbarLinks.map((link, index) => (
-        <li key={index}>
-          {link.title === "Catalog" ? (
-            <>
-              {/* Catalog header */}
-              <button
-                className={`flex w-full items-center justify-between  ${
-                  matchRoute("/catalog/:catalogName")
-                    ? "text-yellow-25"
-                    : "text-richblack-25"
-                }`}
-                onClick={() => setCatalogOpen((prev) => !prev)}
-              >
-                <span>{link.title}</span>
-                <MdOutlineArrowDropDownCircle
-                  className={`transition-transform ${
-                    catalogOpen ? "rotate-180" : "rotate-0"
-                  }`}
-                />
-              </button>
 
-              {/* Sublinks expand */}
-              {catalogOpen && (
-                <div className="ml-4 mt-2 flex flex-col gap-2 bg-richblack-5 text-richblack-700 rounded-lg p-5 items-center">
-                  {loading ? (
-                    <p className="text-center">Loading...</p>
-                  ) : subLinks.length ? (
-                    subLinks.map((subLink) => (
-                      <Link
-                        key={subLink._id}
-                        to={`/catalog/${subLink.name
-                          .split(" ")
-                          .join("-")
-                          .toLowerCase()}`}
-                        className="rounded-md px-2 py-2 text-sm "
-                        onClick={() => setMenuOpen(false)}
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="absolute top-14 left-0 z-[999] w-full bg-richblack-900 p-6 md:hidden">
+            <ul className="flex flex-col gap-4 text-richblack-25">
+              {NavbarLinks.map((link, index) => (
+                <li key={index}>
+                  {link.title === "Catalog" ? (
+                    <>
+                      {/* Catalog header */}
+                      <button
+                        className={`flex w-full items-center justify-between  ${matchRoute("/catalog/:catalogName")
+                            ? "text-yellow-25"
+                            : "text-richblack-25"
+                          }`}
+                        onClick={() => setCatalogOpen((prev) => !prev)}
                       >
-                        {subLink.name}
-                      </Link>
-                    ))
+                        <span>{link.title}</span>
+                        <MdOutlineArrowDropDownCircle
+                          className={`transition-transform ${catalogOpen ? "rotate-180" : "rotate-0"
+                            }`}
+                        />
+                      </button>
+
+                      {/* Sublinks expand */}
+                      {catalogOpen && (
+                        <div className="ml-4 mt-2 flex flex-col gap-2 bg-richblack-5 text-richblack-700 rounded-lg p-5 items-center">
+                          {loading ? (
+                            <p className="text-center">Loading...</p>
+                          ) : subLinks.length ? (
+                            subLinks.map((subLink) => (
+                              <Link
+                                key={subLink._id}
+                                to={`/catalog/${subLink.name
+                                  .split(" ")
+                                  .join("-")
+                                  .toLowerCase()}`}
+                                className="rounded-md px-2 py-2 text-sm "
+                                onClick={() => setMenuOpen(false)}
+                              >
+                                {subLink.name}
+                              </Link>
+                            ))
+                          ) : (
+                            <p className="text-center text-sm">No Categories Found</p>
+                          )}
+                        </div>
+                      )}
+                    </>
                   ) : (
-                    <p className="text-center text-sm">No Categories Found</p>
+                    <Link
+                      to={link?.path}
+                      className={`block ${matchRoute(link?.path)
+                          ? "text-yellow-25"
+                          : "text-richblack-25"
+                        }`}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      {link.title}
+                    </Link>
                   )}
-                </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Login / Signup / Profile */}
+            <div className="mt-6 flex flex-col gap-3">
+              {token === null ? (
+                <>
+                  <Link to="/login" onClick={() => setMenuOpen(false)}>
+                    <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-richblack-100">
+                      Log in
+                    </button>
+                  </Link>
+                  <Link to="/signup" onClick={() => setMenuOpen(false)}>
+                    <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-richblack-100">
+                      Sign up
+                    </button>
+                  </Link>
+                </>
+              ) : (
+                <ProfiledropDown />
               )}
-            </>
-          ) : (
-            <Link
-              to={link?.path}
-              className={`block ${
-                matchRoute(link?.path)
-                  ? "text-yellow-25"
-                  : "text-richblack-25"
-              }`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.title}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ul>
-
-    {/* Login / Signup / Profile */}
-    <div className="mt-6 flex flex-col gap-3">
-      {token === null ? (
-        <>
-          <Link to="/login" onClick={() => setMenuOpen(false)}>
-            <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-richblack-100">
-              Log in
-            </button>
-          </Link>
-          <Link to="/signup" onClick={() => setMenuOpen(false)}>
-            <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-richblack-100">
-              Sign up
-            </button>
-          </Link>
-        </>
-      ) : (
-        <ProfiledropDown />
-      )}
-    </div>
-  </div>
-)}
-
-
-
-
-
-
-
-
+            </div>
+          </div>
+        )}
 
       </div>
-
-
-
-
-
-
-
-
-
     </div>
   );
 };

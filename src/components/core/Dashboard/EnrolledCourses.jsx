@@ -24,64 +24,84 @@ const EnrolledCourses = () => {
     getEnrolledCourses();
   }, []);
 
-
   const navigate = useNavigate();
-
 
   console.log("Printing the enroled Courrses ");
   console.log(enrolledCourses);
 
-
   return (
-    <div className="text-white">
-      <h2> Enrolled courses </h2>
+    <div className="text-white px-4 md:px-12 py-10 min-h-screen bg-richblack-900">
+      <h2 className="text-3xl font-semibold mb-8 text-richblack-5">
+        Enrolled Courses
+      </h2>
 
       {
         // if enrolledCourses not availablle now
         !enrolledCourses ? (
-          <div>Loading...</div>
+          <div className="text-richblack-300">Loading...</div>
         ) : !enrolledCourses.length ? (
-          <p>You have not enrolled in Any Course yet </p>
+          <p className="text-richblack-300">
+            You have not enrolled in any course yet.
+          </p>
         ) : (
-          <div>
-            <div>
-              <p> Course Name</p>
-              <p>Duration</p>
-              <p>Progress</p>
+          <div className="overflow-x-auto">
+            {/* Table-like header (hidden on small screens) */}
+            <div className="hidden md:grid grid-cols-12 gap-4 bg-richblack-800 text-richblack-200 px-6 py-3 rounded-t-lg text-sm uppercase">
+              <p className="col-span-6">Course</p>
+              <p className="col-span-3">Duration</p>
+              <p className="col-span-3">Progress</p>
+            </div>
 
-              {/* card yethun suru zale  */}
-
+            {/* card yethun suru zale  */}
+            <div className="flex flex-col divide-y divide-richblack-700">
               {enrolledCourses.map((course, index) => {
                 return (
-                  <div key={index}>
-
-
-                    {/* left wala part  */}
-                    <div className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-8 "
+                  <div
+                    key={index}
+                    className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-richblack-800 hover:bg-richblack-700 transition-all duration-300 p-6 cursor-pointer"
                     // this is used for routing to view the lecture of enroled courses 
-                    onClick={()=>{
-                      navigate(`/view-course/${course?._id}/section/${course.courseContent?.[0]._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`)
+                    onClick={() => {
+                      navigate(
+                        `/view-course/${course?._id}/section/${course.courseContent?.[0]._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
+                      );
                     }}
-                    >
-                      <img src={course.thumbnail} alt="thumbnail name " />
+                  >
+                    {/* left wala part  */}
+                    <div className="flex items-center gap-4 col-span-6">
+                      <img
+                        src={course.thumbnail}
+                        alt="thumbnail"
+                        className="h-16 w-24 rounded-lg object-cover"
+                      />
 
-                      <div>
-                        <p>{course.courseName} </p>
-                        <p>{course.courseDescription} </p>
+                      <div className="flex flex-col">
+                        <p className="font-medium text-richblack-25 text-lg">
+                          {course.courseName}
+                        </p>
+                        <p className="text-sm text-richblack-300 line-clamp-2">
+                          {course.courseDescription}
+                        </p>
                       </div>
                     </div>
 
-                    <div>{course?.totalDuration}</div>
+                    {/* Duration */}
+                    <div className="col-span-3 text-richblack-200 text-sm">
+                      {course?.totalDuration || "—"}
+                    </div>
 
                     {/* Progress bar div */}
-                    <div>
-                      <p> Progress: {course.progressPercentage} </p>
+                    <div className="col-span-3 flex flex-col gap-2">
+                      <p className="text-sm text-richblack-200">
+                        Progress: {course.progressPercentage}%
+                      </p>
 
                       {/* Progress Bar  */}
                       <ProgressBar
                         completed={course.progressPercentage}
                         height="8px"
                         isLabelVisible={false}
+                        bgColor="#FFD60A"
+                        baseBgColor="#2c2f38"
                       />
                     </div>
                   </div>
