@@ -174,65 +174,64 @@ const VideoDetails = () => {
       {!videoData ? (
         <div className="text-center text-richblack-300">No Data Found</div>
       ) : (
-<ErrorBoundary>
-  <div className="relative w-full rounded-lg overflow-hidden bg-richblack-800 shadow-lg">
-    <Player
-      ref={playerRef}
-      aspectRatio="16:9"
-      playsInline
-      onEnded={() => setVideoEnded(true)}
-      src={videoData?.videoUrl}
-      className="w-full"
-    >
-      <AiFillPlayCircle />
-    </Player>
-  </div>
+        <ErrorBoundary>
+          <div className="relative w-full rounded-lg overflow-hidden bg-richblack-800 shadow-lg">
+            <Player
+              ref={playerRef}
+              aspectRatio="16:9"
+              playsInline
+              onEnded={() => setVideoEnded(true)}
+              src={videoData?.videoUrl}
+              className="w-full"
+            >
+              <AiFillPlayCircle />
+            </Player>
+          </div>
 
-  {/* Navigation buttons */}
-  <div className="flex justify-between items-center mt-4">
-    {!isFirstVideo() && (
-      <IconBtn
-        disabled={loading}
-        onClick={goToPrevVideo}
-        customClasses="px-4 py-2 bg-richblack-700 hover:bg-richblack-600 rounded-md"
-      >
-        Prev
-      </IconBtn>
-    )}
-    {!isLastVideo() && (
-      <IconBtn
-        disabled={loading}
-        onClick={goToNextVideo}
-        customClasses="px-4 py-2 bg-yellow-400 hover:bg-yellow-300 rounded-md text-black"
-      >
-        Next
-      </IconBtn>
-    )}
-  </div>
+          {/* Navigation buttons */}
+          <div className="flex justify-between items-center mt-4">
+            {!isFirstVideo() && (
+              <IconBtn
+                disabled={loading}
+                onClick={goToPrevVideo}
+                customClasses="px-4 py-2 bg-richblack-700 hover:bg-richblack-600 rounded-md"
+              >
+                Prev
+              </IconBtn>
+            )}
+            {!isLastVideo() && (
+              <IconBtn
+                disabled={loading}
+                onClick={goToNextVideo}
+                customClasses="px-4 py-2 bg-yellow-400 hover:bg-yellow-300 rounded-md text-black"
+              >
+                Next
+              </IconBtn>
+            )}
+          </div>
 
-  {/* Title + description */}
-  <div className="px-2 md:px-0 mt-6">
-    <h1 className="text-xl md:text-2xl font-semibold text-richblack-5 mb-2">
-      {videoData?.title}
-    </h1>
-    <p className="text-richblack-200 text-sm md:text-base leading-relaxed">
-      {videoData?.description}
-    </p>
-  </div>
+          {/* Title + description */}
+          <div className="px-2 md:px-0 mt-6">
+            <h1 className="text-xl md:text-2xl font-semibold text-richblack-5 mb-2">
+              {videoData?.title}
+            </h1>
+            <p className="text-richblack-200 text-sm md:text-base leading-relaxed">
+              {videoData?.description}
+            </p>
+          </div>
 
-  {/* Mark as Complete (only after end & if not already done) */}
-  {videoEnded && !completedLectures.includes(subSectionId) && (
-    <div className="mt-4 absolute z-10">
-      <IconBtn
-        disabled={loading}
-        onClick={handleLectureCompletion}
-        text={!loading ? "Mark As Completed" : "Loading..."}
-        customClasses="px-6 py-2 bg-green-500 hover:bg-green-400 rounded-md"
-      />
-    </div>
-  )}
-</ErrorBoundary>
-
+          {/* Mark as Complete (only after end & if not already done) */}
+          {videoEnded && !completedLectures.includes(subSectionId) && (
+            <div className="mt-4 absolute z-10">
+              <IconBtn
+                disabled={loading}
+                onClick={handleLectureCompletion}
+                text={!loading ? "Mark As Completed" : "Loading..."}
+                customClasses="px-6 py-2 bg-green-500 hover:bg-green-400 rounded-md"
+              />
+            </div>
+          )}
+        </ErrorBoundary>
       )}
 
       {/* second section  */}

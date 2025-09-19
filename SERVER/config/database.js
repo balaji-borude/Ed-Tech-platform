@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const MONGODB_URL= process.env.MONGODB_URL;
-
+console.log("MONGODB URL ==>", MONGODB_URL);
 exports.connect =()=>{
     mongoose.connect(MONGODB_URL)
     .then(()=>{
