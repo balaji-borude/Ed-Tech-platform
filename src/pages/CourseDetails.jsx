@@ -10,6 +10,8 @@ import RatingStars from "../components/common/RatingStars";
 import { formatDate } from "../services/formatDate.js";
 
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
+import ReviewSlider from "../components/common/ReviewSlider.jsx";
+import Footer from "../components/common/Footer.jsx";
 
 const CourseDetails = () => {
   const { loading, user } = useSelector((state) => state.profile);
@@ -84,7 +86,9 @@ const CourseDetails = () => {
   };
 
   if (loading || !courseData) {
-    return <div className="text-center text-richblack-300 py-20"> Loading .....</div>;
+    return (
+      <div className="text-center text-richblack-300 py-20"> Loading .....</div>
+    );
   }
 
   // destructure after state is set
@@ -115,32 +119,43 @@ const CourseDetails = () => {
   };
 
   return (
-    <div className="bg-richblack-900 min-h-screen text-richblack-50 px-4 md:px-10 lg:px-20 py-10 space-y-10">
-
+    <>
+          <div className=" w-11/12 max-w-maxContent  mx-auto min-h-screen text-richblack-50 px-4 md:px-10 lg:px-20 py-10 space-y-10">
       {/* Course Header */}
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-12">
-        <div className="flex-1 space-y-4">
-          <p className="text-3xl md:text-4xl font-bold">{courseName}</p>
-          <p className="text-richblack-300">{courseDescription}</p>
+      <div className="w-full flex flex-col justify-between lg:flex-row gap-6 lg:gap-12">
+        {/* Left Card */}
+        <div className="flex-1 w-full h-auto bg-richblack-800 border border-richblack-700 rounded-2xl shadow-md p-6 space-y-4">
+          <p className="text-3xl md:text-4xl font-bold text-left">
+            {courseName}
+          </p>
+          <p className="text-richblack-300 max-w-[90%] text-left">
+            {courseDescription}
+          </p>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="flex items-center gap-2">
-              <p className="font-semibold">{avgReviewCount}</p>
-              <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-              <span className="text-richblack-400">({ratingAndReviews?.length || 0} reviews)</span>
-              <span className="text-richblack-400">({studentEnrolled?.length || 0} Students Enrolled)</span>
-            </span>
+          {/* Rating Section */}
+          <div className="flex flex-col gap-2 text-left">
+            <RatingStars Review_Count={avgReviewCount} Star_Size={30} />
+            <p className="font-semibold mt-1">Avg Review {avgReviewCount}</p>
+
+            <div className="flex flex-col md:flex-row gap-2 text-sm">
+              <span className="text-richblack-400">
+                ({ratingAndReviews?.length || 0} reviews)
+              </span>
+              <span className="text-richblack-400">
+                ({studentEnrolled?.length || 0} Students Enrolled)
+              </span>
+            </div>
           </div>
 
-          <div className="text-richblack-400 space-y-1">
-            <p> Created By {`${instructor.firstName}`} </p>
-            <p>Created At : {formatDate(createdAt)}</p>
-            {/*  */}
-            <p>Language English </p>
+          {/* Meta Info */}
+          <div className="text-richblack-400 space-y-1 text-left text-sm">
+            <p>Created By {`${instructor.firstName}`}</p>
+            <p>Created At: {formatDate(createdAt)}</p>
+            <p>Language: English</p>
           </div>
         </div>
 
-        {/* Card components */}
+        {/* Right Card */}
         <div className="flex-1">
           <CourseDetailsCard
             course={courseData}
@@ -192,7 +207,9 @@ const CourseDetails = () => {
               {isActive.includes(section._id) && (
                 <div className="mt-2 pl-4 flex flex-col gap-1">
                   {section.subSection?.map((sub) => (
-                    <p key={sub._id} className="text-richblack-200">{sub.title}</p>
+                    <p key={sub._id} className="text-richblack-200">
+                      {sub.title}
+                    </p>
                   ))}
                 </div>
               )}
@@ -203,7 +220,11 @@ const CourseDetails = () => {
 
       {/* Confirmation Modal */}
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
+
+      <ReviewSlider/>
     </div>
+      <Footer/>
+    </>
   );
 };
 

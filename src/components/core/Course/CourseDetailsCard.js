@@ -22,7 +22,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleByCourse }) {
         }
         if (token) {
             dispatch(addToCart(course));
-            toast.success("Added to Cart!");
+            // toast.success("Added to Cart!");
             return;
         }
         setConfirmationModal({
@@ -42,7 +42,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleByCourse }) {
     }
 
     return (
-        <div className="bg-richblack-900 flex text-richblack-25 rounded-xl shadow-lg p-6  flex-col gap-6 max-w-md mx-auto md:max-w-lg lg:max-w-xl">
+        <div className="bg-richblack-900 flex border border-richblack-700 shadow-lg  rounded-xl text-richblack-25 rounded-xl shadow-lg p-6  flex-col gap-6 max-w-md mx-auto md:max-w-lg lg:max-w-xl">
 
           <div>
 

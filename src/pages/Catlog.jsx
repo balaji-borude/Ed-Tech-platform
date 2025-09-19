@@ -75,9 +75,11 @@ const Catlog = () => {
   // );
   return (
     <>
+
+
       <div className="mx-auto text-richblack-25 w-full bg-richblack-800">
         {/* I am unsed {catlogname} */}
-        <div className="bg-richblack-800 h-auto w-11/12 mx-auto p-10 space-y-6">
+        <div className="bg-richblack-800 h-auto w-11/12 max-w-maxContent mx-auto p-10 space-y-6">
           <p className="flex gap-x-2">
             {`Home  /  Catlog  / `}
             <span className="text-yellow-100">
@@ -95,7 +97,7 @@ const Catlog = () => {
         </div>
       </div>
 
-      <div className="  w-11/12 mx-auto">
+      <div className="w-11/12 max-w-maxContent mx-auto">
         <div>
           {/* section1 */}
           <div>
@@ -148,8 +150,8 @@ const Catlog = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+        <Footer />
     </>
   );
 };
