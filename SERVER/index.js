@@ -20,7 +20,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: "http://localhost:3000",
+     origin: [
+      "http://localhost:3000",                 // dev
+      "https://studynotion-nine-gilt.vercel.app", // prod (Vercel)
+    ],
     credentials: true, // If using cookies or authenticatio
 }));
 
