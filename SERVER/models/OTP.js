@@ -13,8 +13,8 @@ const OTPSchema = new mongoose.Schema({
   },
   createdAt:{
     type:Date,
-    default:Date.now(),
-    expires: 60*5               // OTP ----> expire in 5 min --> it Temporary is stored in DB --> 5*60  300 || 
+    default:Date.now,
+    expires: 300               // OTP ----> expire in 5 min --> it Temporary is stored in DB --> 5*60 ||   300 || 
   }
 });
 
@@ -33,19 +33,14 @@ async function sendVerificationEmail(email,otp){
     }
 }
 
-// document save hony agodar Mail gela pahije broo --> ha mail user ne signup kelyavr --> user Verification sathi mail ahe 
+// document save hony agodar Mail gela pahije broo 
+// --> ha mail user ne signup kelyavr --> user Verification sathi mail ahe 
 
 // pre-save middleware function is used 
 OTPSchema.pre("save",async function(next){
     await sendVerificationEmail(this.email,this.otp);
     next();  // go to the next middleware 
-})
+});
 
-const arrowFunction =async()=>{
 
-}
-
-function balaji(){
- console.log('first ')
-}
 module.exports = mongoose.model("OTP",OTPSchema)

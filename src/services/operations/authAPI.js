@@ -29,11 +29,11 @@ export function sendOtp(email, navigate) {
     try {
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
-        //checkUserPresent: true,
+        checkUserPresent: true,
       })
-      console.log("SENDOTP API RESPONSE.-->", response)
+      // console.log("SENDOTP API RESPONSE.-->", response);
 
-      console.log(response.data.success)
+      console.log("OTP SEND -->",response.data.success)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
