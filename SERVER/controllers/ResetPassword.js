@@ -47,7 +47,7 @@ exports.resetPasswordToken = async (req,res) => {
 
  
    } catch (error) {
-    console.log("error in Reset- password",error); 
+    // console.log("error in Reset- password",error); 
     return res.status(500).json({
         success:false,
         message:"something went Wrong While reset password "
@@ -110,9 +110,10 @@ exports.resetPassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error resetting password:", error);
+        // console.error("Error resetting password:", error);
         return res.status(500).json({
             success: false,
+            error:error,
             message: "Something went wrong while resetting the password.",
         });
     }

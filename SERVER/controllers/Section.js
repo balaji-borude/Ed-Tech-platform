@@ -8,7 +8,7 @@ exports.createSection = async(req,res)=>{
         // get data from req. body 
         const{sectionName,courseId} = req.body;
 
-        console.log("createSection controller --> courseId =", courseId)
+        // console.log("createSection controller --> courseId =", courseId)
 
         // validate data 
         if(!sectionName || !courseId){
@@ -25,7 +25,7 @@ exports.createSection = async(req,res)=>{
 
         // Update course with section ObjectId 
               // course chya sechma madhe new Section create kela tyachi id passs karaychi ahe 
-              console.log("updatedCoursedetail why below statemnet is not executing -->");
+            //   console.log("updatedCoursedetail why below statemnet is not executing -->");
 
 		const updatedCourse = await Course.findByIdAndUpdate(
 			courseId,
@@ -43,7 +43,7 @@ exports.createSection = async(req,res)=>{
 				},
 			})
 			.exec();
-        console.log("updatedCoursedetail Db interaction -->",updatedCourse)
+        // console.log("updatedCoursedetail Db interaction -->",updatedCourse)
 
         // TODO :-- use Populate to replcae section and subsection both in in the updated Course detail .----->>  H.W 
 
@@ -147,9 +147,10 @@ exports.updateSection = async (req, res) => {
 			data:course,
 		});
 	} catch (error) {
-		console.error("Error updating section:", error);
+		// console.error("Error updating section:", error);
 		res.status(500).json({
 			success: false,
+			error:error,
 			message: "Internal server error",
 		});
 	}
@@ -166,7 +167,7 @@ exports.deleteSection = async (req, res) => {
 			}
 		})
 		const section = await Section.findById(sectionId);
-		console.log(sectionId, courseId);
+		// console.log(sectionId, courseId);
 		if(!section) {
 			return res.status(404).json({
 				success:false,
@@ -194,9 +195,10 @@ exports.deleteSection = async (req, res) => {
 			data:course
 		});
 	} catch (error) {
-		console.error("Error deleting section:", error);
+
 		res.status(500).json({
 			success: false,
+			error:error,
 			message: "Internal server error",
 		});
 	}

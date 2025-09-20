@@ -6,7 +6,7 @@ require("dotenv").config();
 // authentication middleware
 exports.auth = async (req, res, next) => {
     try{
-        console.log("Entering in Auth middleware")
+        // console.log("Entering in Auth middleware")
         //extract token
         const token = req.cookies.token
             || req.body.token 
@@ -24,11 +24,11 @@ exports.auth = async (req, res, next) => {
 
         //verify the token
         const JWT_SCERET = process.env.JWT_SCERET;
-        console.log("Printing jwtSecret in auth -->",JWT_SCERET);
+        // console.log("Printing jwtSecret in auth -->",JWT_SCERET);
 
         try{
             const decode =  jwt.verify(token, JWT_SCERET);
-            console.log(decode);
+            // console.log(decode);
             req.user = decode;    
             // user chya request madhe Token pathavle ====> mahnje pratyek user chya request madhe he token janar --> tyacha fayda as honar ki --> pudhcya konntya hi request user takel tyamadhe token asel ch 
             
@@ -102,7 +102,7 @@ exports.isAdmin = async(req,res,next)=>{
 // inInstructor
 exports.isInstructor = async(req,res,next)=>{
     try {
-        console.log("Entering in Is Instructor section ")
+        // console.log("Entering in Is Instructor section ")
         // fetching role from request and checking the role is student  
         if(req.user.accountType !== "Instructor"){
             return res.status(401).json({
@@ -110,7 +110,7 @@ exports.isInstructor = async(req,res,next)=>{
                 message:"This is a Protected Route for Instructor"
             })
         }
-        console.log("existing in Is Instructor section ");
+        // console.log("existing in Is Instructor section ");
         
         next();  // go to next middleware
 

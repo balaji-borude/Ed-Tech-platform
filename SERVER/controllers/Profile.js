@@ -14,7 +14,7 @@ exports.updateProfile = async(req,res) =>{
        
        // get user Id --> token madhe User id send keleli ahe tyatun baher kadhli 
        const id = req.user.id;
-       console.log("Printing Id in Profile-->",id)
+      //  console.log("Printing Id in Profile-->",id)
 
        // validation 
         if( !gender || !dateOfBirth || !about || !contactNumber){
@@ -27,10 +27,10 @@ exports.updateProfile = async(req,res) =>{
        /* User madhe Additionall detail navachi field add keleli ahe tila -->  Profile  ase nav dile , aplyala User model madhun Tya Profile(additionaldetails) field(model) chi Id find karaychi ani tya Id wr aplya req.body madhun ghetlela data update karaycha ahe */  
 
        const userDetail = await User.findById(id);
-       console.log("User detail find keli -->", userDetail)
+      //  console.log("User detail find keli -->", userDetail)
 
         const profileId = userDetail.additionalDetails; // profile chi Id find keli ahe 
-        console.log("user madun Profile chi Id kadli -->",profileId);
+        // console.log("user madun Profile chi Id kadli -->",profileId);
 
         //  find the Profile 
         const profileDetails = await Profile.findById(profileId);
@@ -67,13 +67,9 @@ exports.updateProfile = async(req,res) =>{
 // delete account handler 
 exports.deleteAccount = async(req,res)=>{
     try { 
-      console.log("enterring in delete account");
-      console.log("req.user:", req.user);
-
         // account delete sati acc chi  id lagel --> ti Id find keli ahe 
         const { id } = req.user;  // ✅ Ensure `id` is extracted
-        console.log("Getting User ID in backend:", id);
-       // console.log("getting User id backend",email)
+
 
         //validation --> (id check sathi Db call karaycha ki user present ahe ka nahi and Db madhe )
         const user = await User.findById({_id:id});
@@ -110,9 +106,9 @@ exports.deleteAccount = async(req,res)=>{
 
 
     } catch (error) {
-        console.log(error);
 	    	res.status(500).json({ 
             success: false, 
+            error:error,
             message: "Error occured !! User Cannot be deleted " });
     }
 };
@@ -125,13 +121,13 @@ exports.getAllUserDetails = async(req,res)=>{
     
         // get id --> Hi id login kartanna token madhe takli hoti --> ani te token user madhe send kela hota 
         const id = req.user.id; 
-        console.log("Printing Get all detail id -->", id)
+        // console.log("Printing Get all detail id -->", id)
 
         // validation and get user detail 
         const userDetails = await User.findById(id);
         await userDetails.populate('additionalDetails');   //.execPopulate(); this is Depriciated mongoose 6+
     
-        console.log("userDeils printing-->", userDetails);
+        // console.log("userDeils printing-->", userDetails);
 
         if(!userDetails){
           return res.status(400).json({
@@ -159,11 +155,11 @@ exports.getAllUserDetails = async(req,res)=>{
 
 exports.updateDisplayPicture = async (req, res) => {
     try {
-      console.log("entering the profile update section")
+
       const displayPicture = req.files.displayPicture;
        
       const userId = req.user.id;
-      console.log("userd id ", userId);
+
       
       const image = await uploadImageToCloudinary(
         displayPicture,
@@ -171,7 +167,7 @@ exports.updateDisplayPicture = async (req, res) => {
         1000,
         1000
       )
-      console.log(image)
+      // console.log(image)
       const updatedProfile = await User.findByIdAndUpdate(
         { _id: userId },
         { image: image.secure_url },
@@ -350,11 +346,11 @@ exports.instructorDashboard = async(req,res)=>{
   try {
 
     const  id = req.user.id;
-    console.log("Printing Id from req.user for instructor Dashboard==>",id)
+    // console.log("Printing Id from req.user for instructor Dashboard==>",id)
     //course cha data
     const courseDetails = await Course.find({instructor:id});
 
-    console.log("Instructor Dahbsorad controller res==>",courseDetails);
+    // console.log("Instructor Dahbsorad controller res==>",courseDetails);
 
     const courseData = courseDetails.map((course)=>{
       const totalStudentEnrolled = course.studentEnrolled.length;
@@ -378,9 +374,10 @@ exports.instructorDashboard = async(req,res)=>{
     })
 
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({
-      message:"Internal Server Error "
+      message:"Internal Server Error ",
+      error:error,
     })
   } 
 } 

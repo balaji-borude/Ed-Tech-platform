@@ -74,7 +74,6 @@ exports.capturePayment=async(req,res)=>{
             // console.log("Printing the total amt of all courses ----> ",totalAmount);
 
         } catch (error) {
-            console.log(error);
             return res.status(500).json({
                 success:false,
                 message:error.message
@@ -94,21 +93,20 @@ exports.capturePayment=async(req,res)=>{
 
 // verifying wher is the issue 
 // console.log("Razorpay Credentials:", process.env.RAZORPAY_KEY_ID, process.env.RAZORPAY_KEY_SECRET);
- console.log("Order Options:", options);
+//  console.log("Order Options:", options);
 
 
     // Option warun Order create karu 
     try {
-        console.log("Entering in order of Payment")
+        // console.log("Entering in order of Payment")
         const paymentResponse = await instance.orders.create(options);
-           console.log(" in order of Payment")
+        //    console.log(" in order of Payment")
         res.json({
             success:true,
             message:paymentResponse,
           
         })
     } catch (error) {
-        console.log("ERROR IN INITIATE THE ORDER --> ",error);
         res.status(500).json({
             success:false,
             message:"Could Not Initiate the Order",
@@ -227,9 +225,9 @@ const enrollStudent =async(courses,userId,res)=>{
            courseEnrollmentEmail(enrolledCourse.courseName, `${enrollStudent.firstName && enrolledStudent.lastName}` ) 
         );
         
-        console.log("Email send succesfuly to Enrolled student ", emailResponse);
+        // console.log("Email send succesfuly to Enrolled student ", emailResponse);
         } catch (error) {
-            console.log("error",error);
+            // console.log("error",error);
             return res.status(500).json({
                 success:false,
                 message:error.message
@@ -242,7 +240,7 @@ const enrollStudent =async(courses,userId,res)=>{
 
 // send mail after payment success
 exports.sendPaymentSuccessEmail=async(req,res)=>{
-    console.log("Entering in the SendPaymentSuccessEmail Controller");
+
     const {orderId,paymentId,amount} = req.body;
 
     const userId = req.user.id;
@@ -264,14 +262,14 @@ exports.sendPaymentSuccessEmail=async(req,res)=>{
             paymentSuccessEmail(`${enrolledStudent.firstName}`, amount/100,orderId,paymentId)
 
         );
-        console.log("Email is send succesfully -->");
+        // console.log("Email is send succesfully -->");
         return res.status(200).json({
             success:true,
             message:"Email is send succesfully to student"
         });
 
     } catch (error) {
-        console.log("error in sending mail",error);
+        // console.log("error in sending mail",error);
         return res.status(500).json({
             success:false,
             message:"could not send email "
@@ -283,8 +281,7 @@ exports.sendPaymentSuccessEmail=async(req,res)=>{
 
 
 
-// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// This all below controller is user for ======> Single purchase ==> Above we are writing the ==> ciontroller for multiple element buy options 
+// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ This all below controller is user for ======> Single purchase ==> Above we are writing the ==> ciontroller for multiple element buy options 
 
 // ############################################
 

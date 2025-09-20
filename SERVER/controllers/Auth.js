@@ -127,7 +127,7 @@ if (otp.toString() !== recentOtp.otp.toString()) {
         // Hash the Password 
         let hasshedPassword = await bcrypt.hash(password,10);
 
-        console.log("Password is hashed now ",hasshedPassword);
+        // console.log("Password is hashed now ",hasshedPassword);
 
         // Create the User 
         let approved ="";
@@ -145,7 +145,7 @@ if (otp.toString() !== recentOtp.otp.toString()) {
         });
 
         // in Db profile detail is not showing whyy ?????????????????????????????????????????? --> Because of 
-        console.log("Profile details", profileDetails);
+        // console.log("Profile details", profileDetails);
 
         const user = await User.create({
             firstName,
@@ -160,7 +160,7 @@ if (otp.toString() !== recentOtp.otp.toString()) {
            image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
         });
 
-        console.log("This Entry is Stored in DataBase",user);
+        // console.log("This Entry is Stored in DataBase",user);
 
         // response succes send krar a
         return res.status(200).json({
@@ -231,7 +231,7 @@ exports.login= async(req,res)=>{
 
             // create token 
             const token =  jwt.sign(payload,JWT_SCERET,options);
-            console.log("After LOgin Token is created---> ", token )
+            // console.log("After LOgin Token is created---> ", token )
             
             // token la user madhe INSERT kele 
             // save token to user document in database
@@ -263,9 +263,9 @@ exports.login= async(req,res)=>{
         }
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             success:false,
+            error:error,
             message:"Login failure !! Please Try again later"
         })
     } 
@@ -320,7 +320,7 @@ exports.sendOTP = async(req,res)=>{
 
       // create an entry for OTP in DB 
       const otpBody = await OTP.create(otpPayload);
-      console.log("The Unique OTP is save in DB ", otpBody);
+    //   console.log("The Unique OTP is save in DB ", otpBody);
 
       res.status(200).json({
         success:true,
@@ -330,7 +330,6 @@ exports.sendOTP = async(req,res)=>{
       
 
    } catch (error) {
-        console.log(error);
         return res.status(500).json({
             success:false,
             error:error.message,
@@ -342,7 +341,7 @@ exports.sendOTP = async(req,res)=>{
 //Cotroller For change Password --> H.W
 exports.changePassword = async (req, res) => {
     try {
-        console.log("Entering Change Password Controller");
+        // console.log("Entering Change Password Controller");
 
         // Check if req.user exists
         if (!req.user || !req.user.id) {
@@ -354,8 +353,6 @@ exports.changePassword = async (req, res) => {
 
         // it get from Token which i send in every request
         const userId = req.user.id;
-
-        console.log("User ID:", userId);
 
         // Get user details
         const userDetails = await User.findById(userId);
@@ -392,7 +389,7 @@ exports.changePassword = async (req, res) => {
 
         await userDetails.save(); // Save updated password to DB 
 
-        console.log("Password updated successfully");
+        // console.log("Password updated successfully");
 
         // send mail    
         // Send password to user for your Password is  updated on  email
@@ -417,11 +414,11 @@ exports.changePassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error changing password:", error);
+        // console.error("Error changing password:", error);
         return res.status(500).json({
             success: false,
             message: "Something went wrong while changing the password",
-            error: error.message,
+            error: error,
         });
     }
 };

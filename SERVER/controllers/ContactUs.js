@@ -16,7 +16,8 @@ exports.contactus=async(req,res)=>{
         const body = `<h1> Your Mesage Has been received</h1> 
                     <p> email : ${email} we will get back to you soon !!  </p>`
         const mailResponse = await mailsender(email, "Confirmation mail from study-Notion",body);
-        console.log("sending mail to contactUs student")
+
+        // console.log("sending mail to contactUs student")
         // send mail to studyNotion that the this student send a mail to 
 
         const mailToStudyNotion = await mailsender(process.env.STUDYNOTION_MAIL, `${email} send email check it Out !!! `, `<p> ${message} -- <sub> send by - ${email}</sub> Solve the Query </p>`)

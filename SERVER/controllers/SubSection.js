@@ -222,7 +222,7 @@ exports.createSubSection = async (req, res) => {
       data: updatedSection,
     });
   } catch (error) {
-    console.error("Error creating new sub-section:", error);
+    // console.error("Error creating new sub-section:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -275,9 +275,10 @@ exports.createSubSection = async (req, res) => {
         message: "Section updated successfully",
       })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return res.status(500).json({
         success: false,
+        error:error,
         message: "An error occurred while updating the section",
       })
     }
@@ -310,9 +311,10 @@ exports.createSubSection = async (req, res) => {
         message: "SubSection deleted successfully",
       })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return res.status(500).json({
         success: false,
+        error:error,
         message: "An error occurred while deleting the SubSection",
       })
     }

@@ -19,7 +19,7 @@ const mailSender =async (email,title,body)=>{
             subject:`${title}`,                  // chcek can we use --> {body } or not
             html:`${body}`
         }) 
-        console.log("printing send mail data --> ", Info);
+        console.log("Mail is send Succesfully --> ", Info);
 
     } catch (error) {
         console.log(error.message)

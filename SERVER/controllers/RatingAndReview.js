@@ -11,7 +11,7 @@ exports.RatingAndReview = async (req, res) => {
     // fetch data from user id
     const { rating, review, courseId } = req.body;
 
-    console.log("Print reating and reviw crendetial ", userId, courseId);
+    // console.log("Print reating and reviw crendetial ", userId, courseId);
 
     //check if user is enrolled or not
     // eka course maadhe gela nani tithe given CourseId cha course find kela --> tya  prateyk  course madhe enrolled student chya user id astya --> hi id tithe ahe ka te check karnysathi second parameter use kelay
@@ -21,10 +21,10 @@ exports.RatingAndReview = async (req, res) => {
       studentEnrolled: { $in: [userId] },
     });
 
-    console.log(
-      "Print the res of coursedetails rating and review ",
-      courseDetails
-    );
+    // console.log(
+    //   "Print the res of coursedetails rating and review ",
+    //   courseDetails
+    // );
 
     if (!courseDetails) {
       return res.status(404).json({
@@ -111,10 +111,11 @@ exports.getAverageRating = async (req, res) => {
 
     // return rating
   } catch (error) {
-    console.log(error);
+   
     return res.status(500).json({
       success: false,
       message: error.message,
+      error:error
     });
   }
 };
@@ -151,10 +152,11 @@ const allReviews = await RatingAndReview.find({})
       data: allReviews,
     });
   } catch (error) {
-    console.log(error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
+      error:error
     });
   }
 };
