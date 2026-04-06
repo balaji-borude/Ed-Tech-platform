@@ -58,7 +58,7 @@ const Navbar = () => {
     fetchSubLinks();
   }, []);
 
-  //matchPath() is a function (likely from React Router v6).
+  //************  matchPath() is a function (likely from React Router v6).
   //It checks if the location.pathname matches the provided route.
   const location = useLocation();
 

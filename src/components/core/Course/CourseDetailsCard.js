@@ -27,13 +27,13 @@ function CourseDetailsCard({ course, setConfirmationModal, handleByCourse }) {
         }
         setConfirmationModal({
             text1: "You are not Logged In",
-            text2: "Please login to buy a course",
-            btn1text: "Login",
-            btn2text: "Cancel",
+            text2: "Please login to Add to Cart the course",
+            btn1Text: "Login",
+            btn2Text: "Cancel",
             btn1Handler: () => navigate("/login"),
-            btn2Handler: () => setConfirmationModal(false)
+            btn2Handler: () => setConfirmationModal(null)
         })
-    };
+    }
 
     // copy link
     function HandleShare() {
@@ -42,7 +42,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleByCourse }) {
     }
 
     return (
-        <div className="bg-richblack-900 flex border border-richblack-700 shadow-lg  rounded-xl text-richblack-25 rounded-xl shadow-lg p-6  flex-col gap-6 max-w-md mx-auto md:max-w-lg lg:max-w-xl">
+        <div className="bg-richblack-900 flex border border-richblack-700 shadow-lg  rounded-xl text-richblack-25  p-6  flex-col gap-6 max-w-md mx-auto md:max-w-lg lg:max-w-xl">
 
           <div>
 

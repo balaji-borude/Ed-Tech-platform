@@ -19,13 +19,36 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(cors({
-     origin: [
-      "http://localhost:3000",                 // dev
-      "https://studynotion-nine-gilt.vercel.app", // prod (Vercel)
-    ],
-    credentials: true, // If using cookies or authenticatio
-}));
+// app.use(cors({
+//      origin: [
+//       "http://localhost:3000",                 // dev
+//       "https://studynotion-nine-gilt.vercel.app", // prod (Vercel)
+//     ],
+//     credentials: true, // If using cookies or authenticatio
+// }));
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://studynotion-nine-gilt.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Postman / server calls
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+app.options("*", cors());
+
 
 app.use(fileUpload({
   useTempFiles: true,
